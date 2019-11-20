@@ -8,6 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
+/*
+* 要看看需不需要使用ObservableList去保存游戏组件
+* 如果需要的话 就还需要加一个ChessBoardWrapper来处理文件系统的操作
+* */
 @XmlRootElement(name = "ChessBoard")
 public class ChessBoard {
 //    左横杆
@@ -43,12 +47,12 @@ public class ChessBoard {
     }
 
     //    向棋盘中添加一个被用户选择的游戏组件
-    void addComponent(Entity entity){
+    void addComponent(GameComponent component){
 
     }
 
 //    从棋盘中删除一个对应位置的游戏组件
-    void removeComponent(Entity entity){
+    void removeComponent(GameComponent component){
 
     }
 

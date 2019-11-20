@@ -1,5 +1,7 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
+
 public class Triangle extends GameComponent {
 //    直角位置
     private int rightAngleX;
@@ -42,5 +44,10 @@ public class Triangle extends GameComponent {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public void setEntity(Entity entity) {
+        super.setEntity(entity);
     }
 }

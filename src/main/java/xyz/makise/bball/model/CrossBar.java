@@ -1,5 +1,7 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
+
 public class CrossBar extends GameComponent {
 //    中心坐标
     private int centerX;
@@ -42,5 +44,10 @@ public class CrossBar extends GameComponent {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public void setEntity(Entity entity) {
+        super.setEntity(entity);
     }
 }

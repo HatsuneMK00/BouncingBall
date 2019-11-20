@@ -1,5 +1,7 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
+
 public class Pipe extends GameComponent {
 //    左上角位置
     private int positionX;
@@ -42,5 +44,10 @@ public class Pipe extends GameComponent {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public void setEntity(Entity entity) {
+        super.setEntity(entity);
     }
 }

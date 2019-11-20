@@ -1,5 +1,7 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
+
 public class Circle extends GameComponent {
 //    半径
     private int radius;
@@ -42,5 +44,10 @@ public class Circle extends GameComponent {
 
     public void setCircleCenterY(int circleCenterY) {
         this.circleCenterY = circleCenterY;
+    }
+
+    @Override
+    public void setEntity(Entity entity) {
+        super.setEntity(entity);
     }
 }

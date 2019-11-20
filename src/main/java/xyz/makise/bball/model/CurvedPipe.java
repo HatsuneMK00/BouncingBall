@@ -1,5 +1,7 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
+
 //弯曲的水管
 public class CurvedPipe extends GameComponent{
 //    弯曲的水管的图片的左上角
@@ -55,5 +57,10 @@ public class CurvedPipe extends GameComponent{
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public void setEntity(Entity entity) {
+        super.setEntity(entity);
     }
 }
