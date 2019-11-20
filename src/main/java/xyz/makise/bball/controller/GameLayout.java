@@ -9,8 +9,8 @@ import javafx.scene.control.ToggleGroup;
 * 全部弄好之后再把fxml移到resources的view里面
 * */
 public class GameLayout {
-//    @FXML
-//    private ToggleGroup toggleGroup;
+    @FXML
+    private ToggleGroup toggleGroup;
     @FXML
     private RadioButton hand;
     @FXML
