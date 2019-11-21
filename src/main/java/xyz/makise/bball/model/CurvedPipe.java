@@ -58,9 +58,4 @@ public class CurvedPipe extends GameComponent{
     public void setLength(int length) {
         this.length = length;
     }
-
-    @Override
-    public void setEntity(Entity entity) {
-        super.setEntity(entity);
-    }
 }

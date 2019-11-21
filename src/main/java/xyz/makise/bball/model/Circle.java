@@ -45,9 +45,4 @@ public class Circle extends GameComponent {
     public void setCircleCenterY(int circleCenterY) {
         this.circleCenterY = circleCenterY;
     }
-
-    @Override
-    public void setEntity(Entity entity) {
-        super.setEntity(entity);
-    }
 }
