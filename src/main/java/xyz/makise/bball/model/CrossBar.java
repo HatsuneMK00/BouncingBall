@@ -11,12 +11,12 @@ public class CrossBar extends GameComponent {
 
     public CrossBar() {
         super();
-        super.setType(ComponentType.CROSS_BAR);
+        super.setType(EntityType.CROSS_BAR);
     }
 
     public CrossBar(int centerX, int centerY, int length) {
         super();
-        super.setType(ComponentType.CROSS_BAR);
+        super.setType(EntityType.CROSS_BAR);
         this.centerX = centerX;
         this.centerY = centerY;
         this.length = length;

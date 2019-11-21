@@ -11,12 +11,12 @@ public class Triangle extends GameComponent {
 
     public Triangle() {
         super();
-        super.setType(ComponentType.TRIANGLE);
+        super.setType(EntityType.TRIANGLE);
     }
 
     public Triangle(int rightAngleX, int rightAngleY, int length) {
         super();
-        super.setType(ComponentType.TRIANGLE);
+        super.setType(EntityType.TRIANGLE);
         this.rightAngleX = rightAngleX;
         this.rightAngleY = rightAngleY;
         this.length = length;

@@ -15,12 +15,12 @@ public class CurvedPipe extends GameComponent{
 
     public CurvedPipe() {
         super();
-        super.setType(ComponentType.CURVED_PIPE);
+        super.setType(EntityType.CURVED_PIPE);
     }
 
     public CurvedPipe(int positionX, int positionY, int direction, int length) {
         super();
-        super.setType(ComponentType.CURVED_PIPE);
+        super.setType(EntityType.CURVED_PIPE);
         this.positionX = positionX;
         this.positionY = positionY;
         this.direction = direction;

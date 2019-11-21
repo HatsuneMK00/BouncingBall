@@ -11,12 +11,12 @@ public class Ball extends GameComponent {
 
     public Ball() {
      super();
-     super.setType(ComponentType.BALL);
+     super.setType(EntityType.BALL);
     }
 
     public Ball(int radius, int ballCenterX, int ballCenterY) {
         super();
-        super.setType(ComponentType.BALL);
+        super.setType(EntityType.BALL);
         this.radius = radius;
         this.ballCenterX = ballCenterX;
         this.ballCenterY = ballCenterY;

@@ -11,12 +11,12 @@ public class Pipe extends GameComponent {
 
     public Pipe() {
         super();
-        super.setType(ComponentType.PIPE);
+        super.setType(EntityType.PIPE);
     }
 
     public Pipe(int positionX, int positionY, int length) {
         super();
-        super.setType(ComponentType.PIPE);
+        super.setType(EntityType.PIPE);
         this.positionX = positionX;
         this.positionY = positionY;
         this.length = length;

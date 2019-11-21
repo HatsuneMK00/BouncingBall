@@ -11,6 +11,9 @@ import java.util.ArrayList;
 /*
 * 要看看需不需要使用ObservableList去保存游戏组件
 * 如果需要的话 就还需要加一个ChessBoardWrapper来处理文件系统的操作
+*
+* 这个包中的所有内容全部是为文件系统准备的 和游戏系统么有关系 就用来保存
+*
 * */
 @XmlRootElement(name = "ChessBoard")
 public class ChessBoard {

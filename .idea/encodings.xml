@@ -2,6 +2,14 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/textures/board.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/ball.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/blackHole.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/board.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/board.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/circle.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/crossBar.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/curvedPipe.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/pipe.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/assets/textures/triangle.png" charset="GBK" />
   </component>
 </project>

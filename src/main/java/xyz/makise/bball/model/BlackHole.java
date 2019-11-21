@@ -11,12 +11,12 @@ public class BlackHole extends GameComponent {
 
     public BlackHole() {
         super();
-        super.setType(ComponentType.BLACK_HOLE);
+        super.setType(EntityType.BLACK_HOLE);
     }
 
     public BlackHole(int positionX, int positionY, int length) {
         super();
-        super.setType(ComponentType.BLACK_HOLE);
+        super.setType(EntityType.BLACK_HOLE);
         this.positionX = positionX;
         this.positionY = positionY;
         this.length = length;

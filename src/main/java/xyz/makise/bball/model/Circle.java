@@ -11,12 +11,12 @@ public class Circle extends GameComponent {
 
     public Circle() {
         super();
-        super.setType(ComponentType.CIRCLE);
+        super.setType(EntityType.CIRCLE);
     }
 
     public Circle(int radius, int circleCenterX, int circleCenterY) {
         super();
-        super.setType(ComponentType.CIRCLE);
+        super.setType(EntityType.CIRCLE);
         this.radius = radius;
         this.circleCenterX = circleCenterX;
         this.circleCenterY = circleCenterY;

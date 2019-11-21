@@ -11,12 +11,12 @@ public class Rectangle extends GameComponent {
 
     public Rectangle() {
         super();
-        super.setType(ComponentType.RECTANGLE);
+        super.setType(EntityType.RECTANGLE);
     }
 
     public Rectangle(int positionX, int positionY, int length) {
         super();
-        super.setType(ComponentType.RECTANGLE);
+        super.setType(EntityType.RECTANGLE);
         this.positionX = positionX;
         this.positionY = positionY;
         this.length = length;
