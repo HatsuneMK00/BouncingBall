@@ -3,9 +3,13 @@ package xyz.makise.bball;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
+import xyz.makise.bball.components.BallComponent;
 import xyz.makise.bball.model.ChessBoard;
 
 import javax.xml.bind.JAXBContext;
@@ -21,13 +25,15 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 *
 * */
 public class MainGame extends GameApplication {
-
+    private Entity ball;
+    private int[][] map;//用于存储地图信息，0表示未占用，1表示为一般组件占用，2表示为三角形部件
+    @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setIntroEnabled(false);
         gameSettings.setMenuEnabled(false);
         gameSettings.setCloseConfirmation(false);
-        gameSettings.setHeight(450);
-        gameSettings.setWidth(650);
+        gameSettings.setHeight(600);
+        gameSettings.setWidth(820);
     }
 
 
@@ -37,7 +43,7 @@ public class MainGame extends GameApplication {
     * */
     @Override
     protected void initInput() {
-        super.initInput();
+        onKey(KeyCode.D,()->ball.rotateBy(90));
     }
 
 
@@ -61,7 +67,14 @@ public class MainGame extends GameApplication {
     protected void initGame() {
         super.initGame();
         showUIView();
-
+        map = new int[20][20];
+        getGameWorld().addEntityFactory(new GameFactory());
+        for(int i = 0;i<=570;i+=30){
+            for(int j=0;j<=570;j+=30){
+                spawn("block",i,j);
+            }
+        }
+        ball = spawn("ball",180,180);
     }
 
     private void showUIView(){
@@ -70,7 +83,7 @@ public class MainGame extends GameApplication {
             loader.setLocation(getClass().getClassLoader().getResource("view/GameLayout.fxml"));
             GridPane gameUI = loader.load();
             getGameScene().addUINode(gameUI);
-            getGameScene().getUiNodes().get(0).setTranslateX(450);
+            getGameScene().getUiNodes().get(0).setTranslateX(620);
             getGameScene().getUiNodes().get(0).setTranslateY(20);
         }catch (Exception e){
             e.printStackTrace();
