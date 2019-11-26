@@ -9,6 +9,16 @@ import javafx.scene.control.ToggleGroup;
 * 全部弄好之后再把fxml移到resources的view里面
 * */
 public class GameLayout {
+    private boolean gameStarted = false;
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
     @FXML
     private ToggleGroup toggleGroup;
     @FXML

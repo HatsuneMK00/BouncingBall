@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="406.0" prefWidth="195.0">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="406.0" prefWidth="195.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.makise.bball.controller.GameLayout">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -43,15 +43,18 @@
                 <Insets top="25.0" />
             </GridPane.margin>
             <children>
-                <RadioButton mnemonicParsing="false" text="hand" />
-                <RadioButton mnemonicParsing="false" text="black hole" GridPane.rowIndex="1" />
-                <RadioButton mnemonicParsing="false" text="circle" GridPane.rowIndex="2" />
-                <RadioButton mnemonicParsing="false" text="pipe" GridPane.rowIndex="3" />
-                <RadioButton mnemonicParsing="false" text="cross bar" GridPane.rowIndex="4" />
-                <RadioButton mnemonicParsing="false" text="ball" GridPane.columnIndex="1" />
-                <RadioButton mnemonicParsing="false" text="triangle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <RadioButton mnemonicParsing="false" text="rectangle" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <RadioButton mnemonicParsing="false" text="curved pipe" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <RadioButton fx:id="hand" mnemonicParsing="false" text="hand">
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggleGroup" />
+               </toggleGroup></RadioButton>
+                <RadioButton fx:id="blackHole" mnemonicParsing="false" text="black hole" toggleGroup="$toggleGroup" GridPane.rowIndex="1" />
+                <RadioButton fx:id="circle" mnemonicParsing="false" text="circle" toggleGroup="$toggleGroup" GridPane.rowIndex="2" />
+                <RadioButton fx:id="pipe" mnemonicParsing="false" text="pipe" toggleGroup="$toggleGroup" GridPane.rowIndex="3" />
+                <RadioButton fx:id="crossBar" mnemonicParsing="false" text="cross bar" toggleGroup="$toggleGroup" GridPane.rowIndex="4" />
+                <RadioButton fx:id="ball" mnemonicParsing="false" text="ball" toggleGroup="$toggleGroup" GridPane.columnIndex="1" />
+                <RadioButton fx:id="triangle" mnemonicParsing="false" text="triangle" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <RadioButton fx:id="rectangle" mnemonicParsing="false" text="rectangle" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <RadioButton fx:id="curvedPipe" mnemonicParsing="false" text="curved pipe" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <RadioButton mnemonicParsing="false" text="cross bar" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>

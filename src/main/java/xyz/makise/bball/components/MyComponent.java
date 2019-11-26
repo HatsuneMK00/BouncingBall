@@ -7,4 +7,6 @@ public interface MyComponent {
     Entity rotate();
     Entity zoomOut();
     Entity zoomIn();
+    int getScale();
+    void setScale(int scale);
 }

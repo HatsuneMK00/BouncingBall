@@ -1,13 +1,14 @@
 package xyz.makise.bball.components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
+import javafx.geometry.Point2D;
 
-import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
-import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
-public class RectangleComponent extends Component implements MyComponent{
+public class CircleComponent extends Component implements MyComponent {
     private int scale;
 
     @Override
@@ -17,20 +18,22 @@ public class RectangleComponent extends Component implements MyComponent{
 
     @Override
     public Entity zoomOut() {
-        SpawnData data = new SpawnData(getEntity().getX(), getEntity().getY());
-        data.put("scale", getEntity().getComponent(CircleComponent.class).getScale() + 1);
+        int scale = getEntity().getComponent(CircleComponent.class).getScale() + 1;
+        SpawnData data = new SpawnData(getEntity().getX() + 15 * scale, getEntity().getY() + 15 * scale);
+        data.put("scale", scale);
         getPhysicsWorld().onEntityRemoved(getEntity());
         getEntity().removeFromWorld();
-        return spawn("rectangle", data);
+        return spawn("circle", data);
     }
 
     @Override
     public Entity zoomIn() {
-        SpawnData data = new SpawnData(getEntity().getX(), getEntity().getY());
-        data.put("scale", getEntity().getComponent(CircleComponent.class).getScale() - 1);
+        int scale = getEntity().getComponent(CircleComponent.class).getScale() - 1;
+        SpawnData data = new SpawnData(getEntity().getX() + 15 * scale, getEntity().getY() + 15 * scale);
+        data.put("scale", scale);
         getPhysicsWorld().onEntityRemoved(getEntity());
         getEntity().removeFromWorld();
-        return spawn("rectangle", data);
+        return spawn("circle", data);
     }
 
     @Override
@@ -42,7 +45,4 @@ public class RectangleComponent extends Component implements MyComponent{
     public void setScale(int scale) {
         this.scale = scale;
     }
-//    public void onAdded(){
-//        entity.getTransformComponent().setScaleOrigin(entity.getCenter());
-//    }
 }

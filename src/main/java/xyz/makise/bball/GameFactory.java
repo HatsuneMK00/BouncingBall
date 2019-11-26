@@ -18,9 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
 import org.w3c.dom.CDATASection;
-import xyz.makise.bball.components.BallComponent;
-import xyz.makise.bball.components.BlockComponent;
-import xyz.makise.bball.components.TriangleComponent;
+import xyz.makise.bball.components.*;
 import xyz.makise.bball.model.Ball;
 import xyz.makise.bball.model.EntityType;
 import xyz.makise.bball.model.Triangle;
@@ -40,66 +38,78 @@ import static com.almasb.fxgl.dsl.FXGL.*;
  *
  * */
 public class GameFactory implements EntityFactory {
-    private int[][] map;
-
-    public GameFactory() {
-        map = new int[20][20];
-    }
 
     @Spawns("ball")
     public Entity newBall(SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
         FixtureDef fd = new FixtureDef();
-        fd.setDensity(0.7f);
-        fd.setRestitution(0.5f);
+        fd.setDensity(0f);
+        fd.setRestitution(1f);
         physicsComponent.setFixtureDef(fd);
 
-        Point2D location = new Point2D(-10,-10);
+        Point2D location = new Point2D(-10, -10);
 
-        Entity entity = entityBuilder()
+        return entityBuilder()
                 .type(EntityType.BALL)
                 .from(data)
                 .view(new Circle(10, Color.RED))
-                .bbox(new HitBox(location,BoundingShape.circle(10)))
+                .bbox(new HitBox(location, BoundingShape.circle(10)))
                 .collidable()
                 .with(physicsComponent)
-                .with(new BallComponent())
                 .build();
-        return entity;
     }
 
-    @Spawns("rectangle")
-    public Entity newRectangle(SpawnData data){
+    @Spawns("circle")
+    public Entity newCircle(SpawnData data) {
+        int scale = data.get("scale");
+        double radius = 15 * scale;
+
+        CircleComponent circleComponent = new CircleComponent();
+        circleComponent.setScale(scale);
+
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
         FixtureDef fd = new FixtureDef();
-        fd.setDensity(0.7f);
-        fd.setRestitution(0.5f);
+        fd.setDensity(0f);
+        fd.setRestitution(1f);
         physicsComponent.setFixtureDef(fd);
 
-        Point2D location = new Point2D(data.getX(),data.getY());
-
-        Entity entity = entityBuilder()
-                .type(EntityType.RECTANGLE)
+        return entityBuilder()
+                .type(EntityType.CIRCLE)
                 .from(data)
-                .view(new Rectangle(30,30, Color.RED))
-                .bbox(new HitBox(BoundingShape.box(30,30)))
+                .view(new Circle(radius, Color.RED))
+                .bbox(new HitBox(new Point2D(-radius, -radius), BoundingShape.circle(radius)))
                 .collidable()
+                .with(circleComponent)
                 .with(physicsComponent)
-                .with(new BallComponent())
                 .build();
-        return entity;
     }
 
-    @Spawns("blackHole")
-    public Entity newBlackHole(SpawnData data) {
+    @Spawns("rectangle")
+    public Entity newRectangle(SpawnData data) {
+        int scale = data.get("scale");
+        double width = 30 * scale;
+        double height = 30 * scale;
+
+        RectangleComponent rectangleComponent = new RectangleComponent();
+        rectangleComponent.setScale(scale);
+
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        FixtureDef fd = new FixtureDef();
+        fd.setDensity(0f);
+        fd.setRestitution(1f);
+        physicsComponent.setFixtureDef(fd);
+
         return entityBuilder()
-                .type(EntityType.BLACK_HOLE)
+                .type(EntityType.RECTANGLE)
                 .from(data)
-                .viewWithBBox(new Circle(15, Color.WHITE))
+                .view(new Rectangle(width, height, Color.RED))
+                .bbox(new HitBox(BoundingShape.box(width, height)))
                 .collidable()
-                .with(new PhysicsComponent())
+                .with(physicsComponent)
+                .with(rectangleComponent)
                 .build();
     }
 
@@ -107,53 +117,77 @@ public class GameFactory implements EntityFactory {
     public Entity newTriangle(SpawnData data) {
         int direction = data.get("direction");
         int scale = data.get("scale");
-
-        PhysicsComponent physicsComponent = new PhysicsComponent();
-        physicsComponent.setBodyType(BodyType.STATIC);
-        FixtureDef fd = new FixtureDef();
-        fd.setDensity(0.7f);
-        fd.setRestitution(0.3f);
-        physicsComponent.setFixtureDef(fd);
+        double length = 30 * scale;
 
         TriangleComponent triangleComponent = new TriangleComponent();
         triangleComponent.setDirection(direction);
         triangleComponent.setScale(scale);
 
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        FixtureDef fd = new FixtureDef();
+        fd.setDensity(0f);
+        fd.setRestitution(1f);
+        physicsComponent.setFixtureDef(fd);
+
+        HitBox hitBox = null;
         Polygon polygon = new Polygon();
         double x = data.getX();
         double y = data.getY();
+        System.out.println(x);
+        System.out.println(y);
         polygon.setFill(Color.RED);
         switch (direction) {
             case 0: {
                 polygon.getPoints().addAll(
-                        x, y,
-                        x + 30 * scale, y,
-                        x, y + 30 * scale
+                        0.0, 0.0,
+                        length, 0.0,
+                        0.0, length
                 );
+                hitBox = new HitBox(BoundingShape.polygon(
+                        length, 0.0,
+                        0.0, 0.0,
+                        0.0, length
+                ));
                 break;
             }
             case 1: {
                 polygon.getPoints().addAll(
-                        x, y,
-                        x + 30 * scale, y,
-                        x, y - 30 * scale
+                        0.0, 0.0,
+                        length, 0.0,
+                        0.0, -length
                 );
+                hitBox = new HitBox(BoundingShape.polygon(
+                        length, 0.0,
+                        0.0, 0.0,
+                        0.0, -length
+                ));
                 break;
             }
             case 2: {
                 polygon.getPoints().addAll(
-                        x, y,
-                        x - 30 * scale, y,
-                        x, y - 30 * scale
+                        0.0, 0.0,
+                        -length, 0.0,
+                        0.0, -length
                 );
+                hitBox = new HitBox(BoundingShape.polygon(
+                        -length, 0.0,
+                        0.0, 0.0,
+                        0.0, -length
+                ));
                 break;
             }
             case 3: {
                 polygon.getPoints().addAll(
-                        x, y,
-                        x - 30 * scale, y,
-                        x, y + 30 * scale
+                        0.0, 0.0,
+                        -length, 0.0,
+                        0.0, length
                 );
+                hitBox = new HitBox(BoundingShape.polygon(
+                        -length, 0.0,
+                        0.0, 0.0,
+                        0.0, length
+                ));
                 break;
             }
         }
@@ -165,11 +199,52 @@ public class GameFactory implements EntityFactory {
                 .collidable()
                 .with(triangleComponent)
                 .with(physicsComponent)
-                .bbox(new HitBox(BoundingShape.polygon(
-                        x ,y,
-                        x + 30, y,
-                        x, y+30
-                )))
+                .bbox(hitBox)
+                .build();
+    }
+
+    @Spawns("blackHole")
+    public Entity newBlackHole(SpawnData data) {
+        return entityBuilder()
+                .type(EntityType.BLACK_HOLE)
+                .from(data)
+                .view("blackHole.png")
+                .collidable()
+                .build();
+    }
+
+    @Spawns("pipe")
+    public Entity newPipe(SpawnData data) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        return entityBuilder()
+                .type(EntityType.PIPE)
+                .from(data)
+                .viewWithBBox("pipe.png")
+                .with(new PipeComponent())
+                .with(physicsComponent)
+                .collidable()
+                .build();
+    }
+
+    @Spawns("curvedPipe")
+    public Entity newCurvedPipe(SpawnData data) {
+        return entityBuilder()
+                .type(EntityType.CURVED_PIPE)
+                .from(data)
+                .view("curvedPipe.png")
+                .collidable()
+                .with(new CurvedPipeComponent())
+                .build();
+    }
+
+    @Spawns("crossBar")
+    public Entity newCrossBar(SpawnData data) {
+        return entityBuilder()
+                .type(EntityType.CROSS_BAR)
+                .from(data)
+                .view("crossBar.png")
+                .collidable()
                 .build();
     }
 
@@ -177,7 +252,7 @@ public class GameFactory implements EntityFactory {
     public Entity newBlock(SpawnData data) {
         return entityBuilder()
                 .from(data)
-                .view(new Rectangle(28, 28, Color.BLACK))
+                .view(new Rectangle(29, 29, Color.BLACK))
                 .build();
     }
 }

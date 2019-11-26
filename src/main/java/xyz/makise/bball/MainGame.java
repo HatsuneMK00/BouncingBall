@@ -3,31 +3,30 @@ package xyz.makise.bball;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.components.BoundingBoxComponent;
-import com.almasb.fxgl.entity.components.TransformComponent;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import xyz.makise.bball.components.MyComponent;
-import xyz.makise.bball.components.TriangleComponent;
+import xyz.makise.bball.components.*;
+import xyz.makise.bball.model.EntityType;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /*
-* 游戏的主类
-*
-* */
+ * 游戏的主类
+ *
+ * */
 public class MainGame extends GameApplication {
     private Entity ball;
     private Entity currentEntity;
     private MyComponent currentComponent;
+    private CrossBarComponent crossBar;
     private int[][] map;//用于存储地图信息，0表示未占用，1表示为一般组件占用，2表示为三角形部件
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setIntroEnabled(false);
@@ -39,9 +38,9 @@ public class MainGame extends GameApplication {
 
 
     /*
-    * 所有和输入初始化有关的工作
-    *
-    * */
+     * 所有和输入初始化有关的工作
+     *
+     * */
     @Override
     protected void initInput() {
 //        onKey(KeyCode.D,()->ball.rotateBy(90));
@@ -56,24 +55,41 @@ public class MainGame extends GameApplication {
                 currentComponent = currentEntity.getComponent(TriangleComponent.class);
 //                physicsOn();
             }
-        },KeyCode.Y);
+        }, KeyCode.Y);
+
+        getInput().addAction(new UserMouseAction("click"), MouseButton.PRIMARY);
 
         getInput().addAction(new UserAction("begin") {
             @Override
             protected void onActionBegin() {
-                physicsOn();
+//                getPhysicsWorld().setGravity(0,100);
+                ball = spawn("ball", 195, 45);
             }
-        },KeyCode.B);
-    }
+        }, KeyCode.B);
 
-    private void physicsOn() {
-        PhysicsComponent component = currentEntity.getComponent(PhysicsComponent.class);
-        component.setBodyType(BodyType.DYNAMIC);
-    }
+        getInput().addAction(new UserAction("left") {
+            @Override
+            protected void onActionEnd() {
+                crossBar.stop();
+            }
 
-    private void physicsOff(){
-        PhysicsComponent component = currentEntity.getComponent(PhysicsComponent.class);
-        component.setBodyType(BodyType.STATIC);
+            @Override
+            protected void onAction() {
+                crossBar.left();
+            }
+        }, KeyCode.A);
+
+        getInput().addAction(new UserAction("right") {
+            @Override
+            protected void onActionEnd() {
+                crossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                crossBar.right();
+            }
+        }, KeyCode.D);
     }
 
 
@@ -83,9 +99,61 @@ public class MainGame extends GameApplication {
      * */
     @Override
     protected void initPhysics() {
-        super.initPhysics();
-    }
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PIPE, EntityType.BALL) {
 
+            @Override
+            protected void onCollisionEnd(Entity pipe, Entity ball) {
+                int direction = pipe.getComponent(PipeComponent.class).getDirection();
+                if (direction == 1) {
+                    ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 100);
+                } else {
+                    ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 0);
+                    System.out.println("collide with pipe");
+                }
+            }
+
+            @Override
+            protected void onHitBoxTrigger(Entity a, Entity b, HitBox boxA, HitBox boxB) {
+                System.out.println("1");
+            }
+
+            @Override
+            protected void onCollisionBegin(Entity a, Entity b) {
+                System.out.println(2);
+            }
+
+            @Override
+            protected void onCollision(Entity a, Entity b) {
+                System.out.println(3);
+            }
+        });
+
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.CURVED_PIPE, EntityType.BALL) {
+            @Override
+            protected void onCollision(Entity curvedPipe, Entity ball) {
+                int direction = curvedPipe.getComponent(CurvedPipeComponent.class).getDirection();
+                switch (direction) {
+                    case 0: {
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(100, 0);
+                        break;
+                    }
+                    case 1: {
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, -100);;
+                        break;
+                    }
+                    case 2:{
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(-100, 0);
+                        break;
+                    }
+                    case 3:{
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 100);
+                        break;
+                    }
+                }
+            }
+        });
+
+    }
 
     /*
      * 所有和游戏初始化有关的工作
@@ -94,31 +162,33 @@ public class MainGame extends GameApplication {
     @Override
     protected void initGame() {
         super.initGame();
-        showUIView();
-        map = new int[20][20];
-        getGameWorld().addEntityFactory(new GameFactory());
-        for(int i = 0;i<=570;i+=30){
-            for(int j=0;j<=570;j+=30){
-                spawn("block",i,j);
-            }
-        }
-        getPhysicsWorld().setGravity(0,500);
-        ball = spawn("ball",180,30);
-//        getPhysicsWorld().setGravity(0,0);
-        SpawnData data = new SpawnData(90,180);
-        data.put("direction",0);
-        data.put("scale",1);
-        Entity rect = spawn("rectangle",180,180);
-        currentEntity = spawn("triangle",data);
+        initUIView();
+        initBoard();
+        initGameEntity();
 
-        System.out.println(ball.getCenter());
-        System.out.println(ball.getComponent(BoundingBoxComponent.class).getCenterWorld());
-
-//        System.out.println(ball.getCenter());
-//        currentComponent = currentEntity.getComponent(TriangleComponent.class);
     }
 
-    private void showUIView(){
+    private void initBoard() {
+        map = new int[20][20];
+        getGameWorld().addEntityFactory(new GameFactory());
+        for (int i = 0; i <= 570; i += 30) {
+            for (int j = 0; j <= 570; j += 30) {
+                spawn("block", i, j);
+            }
+        }
+    }
+
+    private void initGameEntity() {
+//        SpawnData data = new SpawnData(180, 180);
+//        data.put("direction", 0);
+//        data.put("scale", 2);
+//        currentEntity = spawn("triangle", data);
+//        currentComponent = currentEntity.getComponent(TriangleComponent.class);
+//        spawn("blackHole",90,180);
+//        spawn("pipe",180,180);
+    }
+
+    private void initUIView() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("view/GameLayout.fxml"));
@@ -126,7 +196,7 @@ public class MainGame extends GameApplication {
             getGameScene().addUINode(gameUI);
             getGameScene().getUiNodes().get(0).setTranslateX(620);
             getGameScene().getUiNodes().get(0).setTranslateY(20);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
