@@ -71,7 +71,6 @@ public class MainGame extends GameApplication {
             GridPane gameUI = loader.load();
             getGameScene().addUINode(gameUI);
             getGameScene().getUiNodes().get(0).setTranslateX(450);
-            getGameScene().getUiNodes().get(0).setTranslateY(20);
         }catch (Exception e){
             e.printStackTrace();
         }
