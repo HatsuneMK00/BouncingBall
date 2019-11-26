@@ -1,15 +1,9 @@
 package xyz.makise.bball.components;
 
 import com.almasb.fxgl.entity.component.Component;
-import xyz.makise.bball.model.GameComponent;
 
-public class BallComponent extends Component {
-    @Override
+public class RectangleComponent extends Component {
     public void onAdded(){
         entity.getTransformComponent().setScaleOrigin(entity.getCenter());
-}
-    public void rotateClockwise(){
-        entity.rotateBy(90);
     }
-
 }

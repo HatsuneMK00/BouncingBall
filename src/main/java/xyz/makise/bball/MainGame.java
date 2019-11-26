@@ -2,26 +2,20 @@ package xyz.makise.bball;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.BoundingBoxComponent;
+import com.almasb.fxgl.entity.components.TransformComponent;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import xyz.makise.bball.components.BallComponent;
-import xyz.makise.bball.model.ChessBoard;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.util.prefs.Preferences;
+import xyz.makise.bball.components.MyComponent;
+import xyz.makise.bball.components.TriangleComponent;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -31,7 +25,8 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 * */
 public class MainGame extends GameApplication {
     private Entity ball;
-    private Entity triangle;
+    private Entity currentEntity;
+    private MyComponent currentComponent;
     private int[][] map;//用于存储地图信息，0表示未占用，1表示为一般组件占用，2表示为三角形部件
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -53,14 +48,32 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("rotate") {
             @Override
             protected void onActionBegin() {
+//                physicsOff();
 //                ball.rotateBy(90);
 //                triangle.rotateBy(90);
-                getGameWorld().removeEntity(ball);
-                ball = spawn("ball",150,180);
+                currentEntity = currentComponent.rotate();
 //                ball.rotateToVector(new Point2D(90,90));
-
+                currentComponent = currentEntity.getComponent(TriangleComponent.class);
+//                physicsOn();
             }
         },KeyCode.Y);
+
+        getInput().addAction(new UserAction("begin") {
+            @Override
+            protected void onActionBegin() {
+                physicsOn();
+            }
+        },KeyCode.B);
+    }
+
+    private void physicsOn() {
+        PhysicsComponent component = currentEntity.getComponent(PhysicsComponent.class);
+        component.setBodyType(BodyType.DYNAMIC);
+    }
+
+    private void physicsOff(){
+        PhysicsComponent component = currentEntity.getComponent(PhysicsComponent.class);
+        component.setBodyType(BodyType.STATIC);
     }
 
 
@@ -71,8 +84,6 @@ public class MainGame extends GameApplication {
     @Override
     protected void initPhysics() {
         super.initPhysics();
-
-
     }
 
 
@@ -91,11 +102,20 @@ public class MainGame extends GameApplication {
                 spawn("block",i,j);
             }
         }
-        ball = spawn("ball",180,180);
-        PhysicsComponent physicsComponent = new PhysicsComponent();
-        getPhysicsWorld().setGravity(0,0);
-        triangle = spawn("triangle", 30, 30);
+        getPhysicsWorld().setGravity(0,500);
+        ball = spawn("ball",180,30);
+//        getPhysicsWorld().setGravity(0,0);
+        SpawnData data = new SpawnData(90,180);
+        data.put("direction",0);
+        data.put("scale",1);
+        Entity rect = spawn("rectangle",180,180);
+        currentEntity = spawn("triangle",data);
+
         System.out.println(ball.getCenter());
+        System.out.println(ball.getComponent(BoundingBoxComponent.class).getCenterWorld());
+
+//        System.out.println(ball.getCenter());
+//        currentComponent = currentEntity.getComponent(TriangleComponent.class);
     }
 
     private void showUIView(){

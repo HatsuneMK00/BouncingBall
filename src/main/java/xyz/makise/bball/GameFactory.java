@@ -7,6 +7,8 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
@@ -18,6 +20,7 @@ import javafx.scene.shape.TriangleMesh;
 import org.w3c.dom.CDATASection;
 import xyz.makise.bball.components.BallComponent;
 import xyz.makise.bball.components.BlockComponent;
+import xyz.makise.bball.components.TriangleComponent;
 import xyz.makise.bball.model.Ball;
 import xyz.makise.bball.model.EntityType;
 import xyz.makise.bball.model.Triangle;
@@ -45,19 +48,45 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("ball")
     public Entity newBall(SpawnData data) {
-        Rectangle rectangle = new Rectangle(10, 30, Color.RED);
-        Point2D location = new Point2D(data.getX(),data.getY());
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.DYNAMIC);
+        FixtureDef fd = new FixtureDef();
+        fd.setDensity(0.7f);
+        fd.setRestitution(0.5f);
+        physicsComponent.setFixtureDef(fd);
+
+        Point2D location = new Point2D(-10,-10);
 
         Entity entity = entityBuilder()
                 .type(EntityType.BALL)
                 .from(data)
-                //.viewWithBBox(new Circle(15, Color.RED))
-//                .view(rectangle)
-//                .bbox(new HitBox(location,BoundingShape.box(10,30)))
-                .viewWithBBox(rectangle)
-                .with(new BlockComponent())
+                .view(new Circle(10, Color.RED))
+                .bbox(new HitBox(location,BoundingShape.circle(10)))
                 .collidable()
-//                .with(new PhysicsComponent())
+                .with(physicsComponent)
+                .with(new BallComponent())
+                .build();
+        return entity;
+    }
+
+    @Spawns("rectangle")
+    public Entity newRectangle(SpawnData data){
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        FixtureDef fd = new FixtureDef();
+        fd.setDensity(0.7f);
+        fd.setRestitution(0.5f);
+        physicsComponent.setFixtureDef(fd);
+
+        Point2D location = new Point2D(data.getX(),data.getY());
+
+        Entity entity = entityBuilder()
+                .type(EntityType.RECTANGLE)
+                .from(data)
+                .view(new Rectangle(30,30, Color.RED))
+                .bbox(new HitBox(BoundingShape.box(30,30)))
+                .collidable()
+                .with(physicsComponent)
                 .with(new BallComponent())
                 .build();
         return entity;
@@ -76,20 +105,71 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("triangle")
     public Entity newTriangle(SpawnData data) {
+        int direction = data.get("direction");
+        int scale = data.get("scale");
+
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        FixtureDef fd = new FixtureDef();
+        fd.setDensity(0.7f);
+        fd.setRestitution(0.3f);
+        physicsComponent.setFixtureDef(fd);
+
+        TriangleComponent triangleComponent = new TriangleComponent();
+        triangleComponent.setDirection(direction);
+        triangleComponent.setScale(scale);
+
         Polygon polygon = new Polygon();
         double x = data.getX();
         double y = data.getY();
         polygon.setFill(Color.RED);
-        polygon.getPoints().addAll(
-                x, y,
-                x + 30, y,
-                x, y + 30
-        );
+        switch (direction) {
+            case 0: {
+                polygon.getPoints().addAll(
+                        x, y,
+                        x + 30 * scale, y,
+                        x, y + 30 * scale
+                );
+                break;
+            }
+            case 1: {
+                polygon.getPoints().addAll(
+                        x, y,
+                        x + 30 * scale, y,
+                        x, y - 30 * scale
+                );
+                break;
+            }
+            case 2: {
+                polygon.getPoints().addAll(
+                        x, y,
+                        x - 30 * scale, y,
+                        x, y - 30 * scale
+                );
+                break;
+            }
+            case 3: {
+                polygon.getPoints().addAll(
+                        x, y,
+                        x - 30 * scale, y,
+                        x, y + 30 * scale
+                );
+                break;
+            }
+        }
+
         return entityBuilder()
                 .type(EntityType.TRIANGLE)
                 .from(data)
-                .viewWithBBox(polygon)
+                .view(polygon)
                 .collidable()
+                .with(triangleComponent)
+                .with(physicsComponent)
+                .bbox(new HitBox(BoundingShape.polygon(
+                        x ,y,
+                        x + 30, y,
+                        x, y+30
+                )))
                 .build();
     }
 
