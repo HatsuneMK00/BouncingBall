@@ -1,5 +1,6 @@
 package xyz.makise.bball.controller;
 
+import com.almasb.fxgl.entity.Entity;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -44,5 +45,11 @@ public class GameLayout {
     public String getSelectedRadioButtonText(){
         RadioButton selectedButton = (RadioButton) toggleGroup.getSelectedToggle();
         return selectedButton.getText();
+    }
+
+    public void rotate(Entity entity){
+        if (entity != null){
+            System.out.println(entity);
+        }
     }
 }

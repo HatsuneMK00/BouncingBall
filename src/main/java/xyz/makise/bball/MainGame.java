@@ -16,8 +16,6 @@ import xyz.makise.bball.components.*;
 import xyz.makise.bball.controller.GameLayout;
 import xyz.makise.bball.model.EntityType;
 
-import java.util.HashMap;
-
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /*
@@ -27,10 +25,11 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class MainGame extends GameApplication {
     private Entity ball;
     private Entity currentEntity;
-//    private MyComponent currentComponent;
+    //    private MyComponent currentComponent;
     private CrossBarComponent crossBar;
     private GameLayout gameUiController;
     private EntityPlacer entityPlacer = new EntityPlacer();
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setIntroEnabled(false);
@@ -54,9 +53,9 @@ public class MainGame extends GameApplication {
 //                physicsOff();
 //                ball.rotateBy(90);
 //                triangle.rotateBy(90);
-                currentEntity = currentComponent.rotate();
-//                ball.rotateToVector(new Point2D(90,90));
-                currentComponent = currentEntity.getComponent(TriangleComponent.class);
+//                currentEntity = currentComponent.rotate();
+////                ball.rotateToVector(new Point2D(90,90));
+//                currentComponent = currentEntity.getComponent(TriangleComponent.class);
 //                physicsOn();
             }
         }, KeyCode.Y);
@@ -68,7 +67,8 @@ public class MainGame extends GameApplication {
                 System.out.println(mousePosition);
                 double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
                 double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
-                entityPlacer.placeEntity(gameUiController.getSelectedRadioButtonText(),justifiedX,justifiedY);
+                currentEntity = entityPlacer.placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
+                        justifiedY);
             }
         }, MouseButton.PRIMARY);
 
@@ -151,14 +151,15 @@ public class MainGame extends GameApplication {
                         break;
                     }
                     case 1: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, -100);;
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, -100);
+                        ;
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         ball.getComponent(PhysicsComponent.class).setLinearVelocity(-100, 0);
                         break;
                     }
-                    case 3:{
+                    case 3: {
                         ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 100);
                         break;
                     }

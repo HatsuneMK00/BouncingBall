@@ -22,11 +22,16 @@ public class EntityPlacer {
 
     public Entity placeEntity(String name, double x, double y) {
         Entity entity = null;
+        entityCount++;
         switch (name) {
             case "hand": {
-                int entityId = map[(int)(x / 30 - 1)][(int)(y / 30 - 1)];
-                if (entityMap.containsKey(entityId)){
-
+                entityCount--;
+                int entityId = map[(int) (x / 30 - 1)][(int) (y / 30 - 1)];
+                if (entityMap.containsKey(entityId)) {
+                    System.out.println(entityId);
+                    entity = entityMap.get(entityId);
+                } else {
+                    System.out.println("nothing selected");
                 }
                 break;
             }
@@ -35,40 +40,40 @@ public class EntityPlacer {
                 break;
             }
             case "triangle": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("triangle", new SpawnData(x, y).put("scale", 1).put("direction", 0));
                 break;
             }
             case "rectangle": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("rectangle", new SpawnData(x, y).put("scale", 1));
                 break;
             }
             case "circle": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("circle", new SpawnData(x + 15, y + 15).put("scale", 1));
                 break;
             }
             case "black hole": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("blackHole", x, y);
                 break;
             }
             case "pipe": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("pipe", x, y);
                 break;
             }
             case "curved pipe": {
-                map[(int)(x / 30 - 1)][(int)(y / 30 - 1)] = entityCount;
+                map[(int) (x / 30 - 1)][(int) (y / 30 - 1)] = entityCount;
                 entity = spawn("curvedPipe", x, y);
                 break;
             }
-            default:{
+            default: {
                 System.out.println(name);
             }
         }
-        entityMap.put(entityCount++, entity);
+        entityMap.put(entityCount, entity);
         return entity;
     }
 }
