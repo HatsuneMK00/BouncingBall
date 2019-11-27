@@ -2,6 +2,7 @@ package xyz.makise.bball.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
 /*
@@ -39,4 +40,9 @@ public class GameLayout {
     private RadioButton curvedPipe;
     @FXML
     private RadioButton crossBar;
+
+    public String getSelectedRadioButtonText(){
+        RadioButton selectedButton = (RadioButton) toggleGroup.getSelectedToggle();
+        return selectedButton.getText();
+    }
 }

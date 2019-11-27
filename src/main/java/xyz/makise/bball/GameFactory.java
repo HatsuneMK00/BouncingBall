@@ -48,13 +48,13 @@ public class GameFactory implements EntityFactory {
         fd.setRestitution(1f);
         physicsComponent.setFixtureDef(fd);
 
-        Point2D location = new Point2D(-10, -10);
+        Point2D location = new Point2D(-12, -12);
 
         return entityBuilder()
                 .type(EntityType.BALL)
                 .from(data)
-                .view(new Circle(10, Color.RED))
-                .bbox(new HitBox(location, BoundingShape.circle(10)))
+                .view(new Circle(12, Color.RED))
+                .bbox(new HitBox(location, BoundingShape.circle(12)))
                 .collidable()
                 .with(physicsComponent)
                 .build();

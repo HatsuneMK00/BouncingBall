@@ -8,11 +8,15 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import xyz.makise.bball.components.*;
+import xyz.makise.bball.controller.GameLayout;
 import xyz.makise.bball.model.EntityType;
+
+import java.util.HashMap;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -23,10 +27,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class MainGame extends GameApplication {
     private Entity ball;
     private Entity currentEntity;
-    private MyComponent currentComponent;
+//    private MyComponent currentComponent;
     private CrossBarComponent crossBar;
-    private int[][] map;//用于存储地图信息，0表示未占用，1表示为一般组件占用，2表示为三角形部件
-
+    private GameLayout gameUiController;
+    private EntityPlacer entityPlacer = new EntityPlacer();
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setIntroEnabled(false);
@@ -57,7 +61,16 @@ public class MainGame extends GameApplication {
             }
         }, KeyCode.Y);
 
-        getInput().addAction(new UserMouseAction("click"), MouseButton.PRIMARY);
+        getInput().addAction(new UserAction("click") {
+            @Override
+            protected void onActionBegin() {
+                Point2D mousePosition = getInput().getMousePositionWorld();
+                System.out.println(mousePosition);
+                double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
+                double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
+                entityPlacer.placeEntity(gameUiController.getSelectedRadioButtonText(),justifiedX,justifiedY);
+            }
+        }, MouseButton.PRIMARY);
 
         getInput().addAction(new UserAction("begin") {
             @Override
@@ -165,11 +178,9 @@ public class MainGame extends GameApplication {
         initUIView();
         initBoard();
         initGameEntity();
-
     }
 
     private void initBoard() {
-        map = new int[20][20];
         getGameWorld().addEntityFactory(new GameFactory());
         for (int i = 0; i <= 570; i += 30) {
             for (int j = 0; j <= 570; j += 30) {
@@ -196,6 +207,7 @@ public class MainGame extends GameApplication {
             getGameScene().addUINode(gameUI);
             getGameScene().getUiNodes().get(0).setTranslateX(620);
             getGameScene().getUiNodes().get(0).setTranslateY(20);
+            gameUiController = loader.getController();
         } catch (Exception e) {
             e.printStackTrace();
         }
