@@ -68,6 +68,9 @@ public class GameFactory implements EntityFactory {
         CircleComponent circleComponent = new CircleComponent();
         circleComponent.setScale(scale);
 
+        ScaleComponent scaleComponent = new ScaleComponent();
+        scaleComponent.setScale(scale);
+
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
         FixtureDef fd = new FixtureDef();
@@ -83,6 +86,7 @@ public class GameFactory implements EntityFactory {
                 .collidable()
                 .with(circleComponent)
                 .with(physicsComponent)
+                .with(scaleComponent)
                 .build();
     }
 
@@ -91,6 +95,9 @@ public class GameFactory implements EntityFactory {
         int scale = data.get("scale");
         double width = 30 * scale;
         double height = 30 * scale;
+
+        ScaleComponent scaleComponent = new ScaleComponent();
+        scaleComponent.setScale(scale);
 
         RectangleComponent rectangleComponent = new RectangleComponent();
         rectangleComponent.setScale(scale);
@@ -110,6 +117,7 @@ public class GameFactory implements EntityFactory {
                 .collidable()
                 .with(physicsComponent)
                 .with(rectangleComponent)
+                .with(scaleComponent)
                 .build();
     }
 
@@ -118,6 +126,12 @@ public class GameFactory implements EntityFactory {
         int direction = data.get("direction");
         int scale = data.get("scale");
         double length = 30 * scale;
+
+        ScaleComponent scaleComponent = new ScaleComponent();
+        scaleComponent.setScale(scale);
+
+        DirectionComponent directionComponent = new DirectionComponent();
+        directionComponent.setDirection(direction);
 
         TriangleComponent triangleComponent = new TriangleComponent();
         triangleComponent.setDirection(direction);
@@ -199,6 +213,8 @@ public class GameFactory implements EntityFactory {
                 .collidable()
                 .with(triangleComponent)
                 .with(physicsComponent)
+                .with(scaleComponent)
+                .with(directionComponent)
                 .bbox(hitBox)
                 .build();
     }

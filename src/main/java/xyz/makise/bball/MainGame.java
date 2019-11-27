@@ -50,15 +50,23 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("rotate") {
             @Override
             protected void onActionBegin() {
-//                physicsOff();
-//                ball.rotateBy(90);
-//                triangle.rotateBy(90);
-//                currentEntity = currentComponent.rotate();
-////                ball.rotateToVector(new Point2D(90,90));
-//                currentComponent = currentEntity.getComponent(TriangleComponent.class);
-//                physicsOn();
+                currentEntity = entityPlacer.triangleRotate(currentEntity);
             }
         }, KeyCode.Y);
+
+        getInput().addAction(new UserAction("zoomOut") {
+            @Override
+            protected void onActionBegin() {
+                currentEntity = entityPlacer.zoomOut(currentEntity);
+            }
+        }, KeyCode.K);
+
+        getInput().addAction(new UserAction("zoomIn") {
+            @Override
+            protected void onActionBegin() {
+                currentEntity = entityPlacer.zoomIn(currentEntity);
+            }
+        }, KeyCode.L);
 
         getInput().addAction(new UserAction("click") {
             @Override
