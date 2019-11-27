@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import xyz.makise.bball.components.*;
 import xyz.makise.bball.controller.GameLayout;
 import xyz.makise.bball.model.EntityType;
+import xyz.makise.bball.model.FileSystem;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -227,81 +228,4 @@ public class MainGame extends GameApplication {
         launch(args);
     }
 
-//    /*
-//    * 文件系统相关 不知道有没有问题
-//    * 文件系统最好放到MainGame类外面去 和model包放在一块
-//    * */
-//    public File getPersonFilePath(){
-//        Preferences prefs = Preferences.userNodeForPackage(MainGame.class);
-//        String filePath = prefs.get("filePath", null);
-//        if (filePath != null) {
-//            return new File(filePath);
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public void setPersonFilePath(File file) {
-//        Preferences prefs = Preferences.userNodeForPackage(MainGame.class);
-//        if (file != null) {
-//            prefs.put("filePath", file.getPath());
-//
-////            // Update the stage title.
-////            primaryStage.setTitle("AddressApp - " + file.getName());
-//        } else {
-//            prefs.remove("filePath");
-//
-////            // Update the stage title.
-////            primaryStage.setTitle("AddressApp");
-//        }
-//    }
-//
-//    public void loadPersonDataFromFile(File file) {
-//        try {
-//            JAXBContext context = JAXBContext
-//                    .newInstance(ChessBoard.class);
-//            Unmarshaller um = context.createUnmarshaller();
-//
-//            // Reading XML from the file and unmarshalling.
-//            ChessBoard wrapper = (ChessBoard) um.unmarshal(file);
-//
-//            chessBoard.clear();
-//            chessBoard.getComponents().addAll(wrapper.getComponents());
-//            chessBoard.setCrossBarLeft(wrapper.getCrossBarLeft());
-//            chessBoard.setCrossBarRight(wrapper.getCrossBarRight());
-//
-//            // Save the file path to the registry.
-//            setPersonFilePath(file);
-//
-//        } catch (Exception e) { // catches ANY exception
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setContentText("Could not load data from file:\n" + file.getPath());
-//            alert.showAndWait();
-//        }
-//    }
-//
-//    public void savePersonDataToFile(File file) {
-//        try {
-//            JAXBContext context = JAXBContext
-//                    .newInstance(ChessBoard.class);
-//            Marshaller m = context.createMarshaller();
-//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-//            // Wrapping our person data.
-////            ChessBoard wrapper = new ChessBoard();
-////            wrapper.setComponents(personData);
-//
-//            // Marshalling and saving XML to the file.
-//            m.marshal(chessBoard, file);
-//
-//            // Save the file path to the registry.
-//            setPersonFilePath(file);
-//        } catch (Exception e) { // catches ANY exception
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setContentText("Could not save data to file:\n" + file.getPath());
-//            alert.showAndWait();
-//        }
-//    }
 }
