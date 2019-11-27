@@ -68,13 +68,13 @@ public class EntityPlacer {
             case "pipe": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("pipe", x, y);
+                entity = spawn("pipe", new SpawnData(x,y).put("scale",1).put("direction",0));
                 break;
             }
             case "curved pipe": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("curvedPipe", x, y);
+                entity = spawn("curvedPipe", new SpawnData(x,y).put("scale",1).put("direction",0));
                 break;
             }
             default: {
@@ -85,8 +85,8 @@ public class EntityPlacer {
         return entity;
     }
 
-    public Entity triangleRotate(Entity entity){
-        return entityRotator.triangleRotate(entity,this);
+    public Entity rotate(Entity entity){
+        return entityRotator.rotate(entity,this);
     }
 
     public Entity zoomOut(Entity entity){

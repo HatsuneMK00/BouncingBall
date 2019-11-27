@@ -50,7 +50,7 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("rotate") {
             @Override
             protected void onActionBegin() {
-                currentEntity = entityPlacer.triangleRotate(currentEntity);
+                currentEntity = entityPlacer.rotate(currentEntity);
             }
         }, KeyCode.Y);
 

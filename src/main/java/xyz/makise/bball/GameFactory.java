@@ -231,27 +231,52 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("pipe")
     public Entity newPipe(SpawnData data) {
+        int direction = data.get("direction");
+        DirectionComponent directionComponent = new DirectionComponent();
+        directionComponent.setDirection(direction);
+        int scale = data.get("scale");
+        ScaleComponent scaleComponent = new ScaleComponent();
+        scaleComponent.setScale(scale);
+
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
-        return entityBuilder()
+        Entity entity =  entityBuilder()
                 .type(EntityType.PIPE)
                 .from(data)
                 .viewWithBBox("pipe.png")
                 .with(new PipeComponent())
                 .with(physicsComponent)
+                .with(directionComponent)
+                .with(scaleComponent)
                 .collidable()
                 .build();
+        entity.rotateBy(90 * direction);
+        return entity;
     }
 
     @Spawns("curvedPipe")
     public Entity newCurvedPipe(SpawnData data) {
-        return entityBuilder()
+        int direction = data.get("direction");
+        DirectionComponent directionComponent = new DirectionComponent();
+        directionComponent.setDirection(direction);
+        int scale = data.get("scale");
+        ScaleComponent scaleComponent = new ScaleComponent();
+        scaleComponent.setScale(scale);
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+
+        Entity entity =  entityBuilder()
                 .type(EntityType.CURVED_PIPE)
                 .from(data)
                 .view("curvedPipe.png")
                 .collidable()
                 .with(new CurvedPipeComponent())
+                .with(directionComponent)
+                .with(scaleComponent)
+                .with(physicsComponent)
                 .build();
+        entity.rotateBy(90 * direction);
+        return entity;
     }
 
     @Spawns("crossBar")
