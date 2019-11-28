@@ -4,35 +4,44 @@ import com.almasb.fxgl.entity.Entity;
 
 public class CrossBar extends GameComponent {
 //    中心坐标
-    private int centerX;
-    private int centerY;
-    private String crossbarType;
+    private double centerX;
+    private double centerY;
+    private int crossbarType;
 
     public CrossBar() {
         super();
         super.setType(EntityType.CROSS_BAR);
     }
 
-    public CrossBar(int centerX, int centerY, int length) {
+    public int getCrossbarType() {
+        return crossbarType;
+    }
+
+    public void setCrossbarType(int crossbarType) {
+        this.crossbarType = crossbarType;
+    }
+
+    public CrossBar(double centerX, double centerY, int crossbarType) {
         super();
         super.setType(EntityType.CROSS_BAR);
         this.centerX = centerX;
         this.centerY = centerY;
+        this.crossbarType = crossbarType;
     }
 
-    public int getCenterX() {
+    public double getCenterX() {
         return centerX;
     }
 
-    public void setCenterX(int centerX) {
+    public void setCenterX(double centerX) {
         this.centerX = centerX;
     }
 
-    public int getCenterY() {
+    public double getCenterY() {
         return centerY;
     }
 
-    public void setCenterY(int centerY) {
+    public void setCenterY(double centerY) {
         this.centerY = centerY;
     }
 }
