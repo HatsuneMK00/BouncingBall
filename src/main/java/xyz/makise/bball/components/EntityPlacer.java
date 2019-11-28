@@ -49,7 +49,7 @@ public class EntityPlacer {
                 break;
             }
             case "ball": {
-                entity = spawn("ball", x + 12, y + 12);
+                entity = spawn("ball", new SpawnData(x + 15, y + 15).put("type",0));
                 break;
             }
             case "triangle": {
@@ -91,7 +91,7 @@ public class EntityPlacer {
             case "cross bar":{
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("", new SpawnData(x,y).put("scale",1).put("direction",0));
+                entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",0));
                 break;
             }
             default: {

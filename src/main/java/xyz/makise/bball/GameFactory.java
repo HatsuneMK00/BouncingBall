@@ -42,19 +42,25 @@ public class GameFactory implements EntityFactory {
     @Spawns("ball")
     public Entity newBall(SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
-        physicsComponent.setBodyType(BodyType.DYNAMIC);
+        int type = data.get("type");
+        if (type == 0) {
+            physicsComponent.setBodyType(BodyType.STATIC);
+        } else {
+            physicsComponent.setBodyType(BodyType.DYNAMIC);
+        }
         FixtureDef fd = new FixtureDef();
         fd.setDensity(0f);
-        fd.setRestitution(1f);
+        fd.setRestitution(0.75f);
+        fd.setFriction(0.5f);
         physicsComponent.setFixtureDef(fd);
 
-        Point2D location = new Point2D(-12, -12);
+        Point2D location = new Point2D(-10, -10);
 
         return entityBuilder()
                 .type(EntityType.BALL)
                 .from(data)
-                .view(new Circle(12, Color.BLUEVIOLET))
-                .bbox(new HitBox(location, BoundingShape.circle(12)))
+                .view(new Circle(10, Color.BLUEVIOLET))
+                .bbox(new HitBox(location, BoundingShape.circle(10)))
                 .collidable()
                 .with(physicsComponent)
                 .build();
@@ -243,7 +249,7 @@ public class GameFactory implements EntityFactory {
 
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
-        Entity entity =  entityBuilder()
+        Entity entity = entityBuilder()
                 .type(EntityType.PIPE)
                 .from(data)
                 .viewWithBBox("pipe.png")
@@ -268,7 +274,7 @@ public class GameFactory implements EntityFactory {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
 
-        Entity entity =  entityBuilder()
+        Entity entity = entityBuilder()
                 .type(EntityType.CURVED_PIPE)
                 .from(data)
                 .viewWithBBox("curvedPipe.png")
@@ -284,15 +290,21 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("crossBar")
     public Entity newCrossBar(SpawnData data) {
+        int type = data.get("type");
+
+        CrossBarComponent crossBarComponent = new CrossBarComponent();
+        crossBarComponent.setType(type);
+
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.KINEMATIC);
+        physicsComponent.setFixtureDef(new FixtureDef().restitution(1.2f).friction(0.3f));
 
         return entityBuilder()
                 .type(EntityType.CROSS_BAR)
                 .from(data)
                 .viewWithBBox("crossBar.png")
                 .with(physicsComponent)
-                .with(new CrossBarComponent())
+                .with(crossBarComponent)
                 .collidable()
                 .build();
     }
@@ -306,12 +318,12 @@ public class GameFactory implements EntityFactory {
     }
 
     @Spawns("wall")
-    public Entity newWall(SpawnData data){
+    public Entity newWall(SpawnData data) {
         HitBox hitBox = new HitBox(BoundingShape.chain(
                 new Point2D(600, 0), new Point2D(600, 600),
-                new Point2D(599,599),new Point2D(1,599),
-                new Point2D(0,600),new Point2D(0,0),
-                new Point2D(1,1),new Point2D(599,1)
+                new Point2D(599, 599), new Point2D(1, 599),
+                new Point2D(0, 600), new Point2D(0, 0),
+                new Point2D(1, 1), new Point2D(599, 1)
 
         ));
         PhysicsComponent physicsComponent = new PhysicsComponent();
