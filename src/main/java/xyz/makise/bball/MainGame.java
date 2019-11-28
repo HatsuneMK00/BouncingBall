@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -82,11 +83,11 @@ public class MainGame extends GameApplication {
 
                 Point2D mousePosition = getInput().getMousePositionWorld();
                 System.out.println(mousePosition);
-                double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
-                double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
-                if (EntityPlacer.getEntityPlacer().isOutOfBound(justifiedX, justifiedY)) return;
-                currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
-                        justifiedY);
+                double x = mousePosition.getX();
+                double y = mousePosition.getY();
+                if (EntityPlacer.getEntityPlacer().isOutOfBound(x, y)) return;
+                currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), x,
+                        y);
                 if (currentEntity.hasComponent(CrossBarComponent.class)) {
                     if (currentEntity.getComponent(CrossBarComponent.class).getType() == 0) {
                         leftCrossBar = currentEntity.getComponent(CrossBarComponent.class);
@@ -178,23 +179,15 @@ public class MainGame extends GameApplication {
 
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.CURVED_PIPE, EntityType.BALL) {
             @Override
-            protected void onCollision(Entity curvedPipe, Entity ball) {
-                int direction = curvedPipe.getComponent(CurvedPipeComponent.class).getDirection();
+            protected void onHitBoxTrigger(Entity a, Entity ball, HitBox boxA, HitBox boxB) {
+                String direction = boxA.getName();
                 switch (direction) {
-                    case 0: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(500, 0);
-                        break;
-                    }
-                    case 1: {
+                    case "right": {
                         ball.getComponent(PhysicsComponent.class).setLinearVelocity(-500, 0);
                         break;
                     }
-                    case 2: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(-100, 0);
-                        break;
-                    }
-                    case 3: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 100);
+                    case "left": {
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(500, 0);
                         break;
                     }
                 }

@@ -33,8 +33,10 @@ public class EntityPlacer {
         return map;
     }
 
-    public Entity placeEntity(String name, double x, double y) {
+    public Entity placeEntity(String name, double originX, double originY) {
         Entity entity = null;
+        double x = (int) (originX / 30) * 30.0;
+        double y = (int) (originY / 30) * 30.0;
         switch (name) {
             case "hand": {
                 int entityId = map[(int) (x / 30)][(int) (y / 30)];
@@ -49,7 +51,7 @@ public class EntityPlacer {
                 break;
             }
             case "ball": {
-                entity = spawn("ball", new SpawnData(x + 15, y + 15).put("type",0));
+                entity = spawn("ball", new SpawnData(originX,originY).put("type",0));
                 break;
             }
             case "triangle": {
@@ -79,7 +81,7 @@ public class EntityPlacer {
             case "pipe": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("pipe", new SpawnData(x,y).put("scale",1).put("direction",0));
+                entity = spawn("pipe", new SpawnData(x,y).put("scale",1).put("direction",1));
                 break;
             }
             case "curved pipe": {

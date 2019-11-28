@@ -70,7 +70,8 @@ public class GameLayout {
                 entities) {
             SpawnData data = new SpawnData(entity.getX(),entity.getY());
             data.put("type",1);
-            spawn("ball",data);
+            Entity ball = spawn("ball",data);
+            ball.getComponent(PhysicsComponent.class).setLinearVelocity(0,-800);
             getPhysicsWorld().onEntityRemoved(entity);
             entity.removeFromWorld();
         }

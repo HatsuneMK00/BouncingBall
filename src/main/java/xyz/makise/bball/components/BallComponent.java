@@ -3,7 +3,6 @@ package xyz.makise.bball.components;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import xyz.makise.bball.model.GameComponent;
 
 import java.util.ArrayList;
 import java.util.List;

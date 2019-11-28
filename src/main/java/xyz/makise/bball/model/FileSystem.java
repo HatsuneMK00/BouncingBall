@@ -115,18 +115,22 @@ public class FileSystem {
             EntityWrapper ball = model;
             SpawnData spawnData = new SpawnData(ball.getPositionX(),ball.getPositionY());
             spawnData.put("scale",ball.getScale());
+            spawnData.put("type",0);
             spawn("ball",spawnData);
         }
         else if(entityType==EntityType.PIPE){
             EntityWrapper pipe = model;
             SpawnData spawnData = new SpawnData(pipe.getPositionX(),pipe.getPositionY());
             spawnData.put("direction",pipe.getDirection());
+            spawnData.put("scale",1);
             spawn("pipe",spawnData);
         }
         else if(entityType==EntityType.CURVED_PIPE){
             EntityWrapper curvedPipe = model;
             SpawnData spawnData = new SpawnData(curvedPipe.getPositionX(),curvedPipe.getPositionY());
             spawnData.put("direction",curvedPipe.getDirection());
+            spawnData.put("scale",1);
+
             spawn("curvedPipe",spawnData);
         }
         else if(entityType==EntityType.RECTANGLE){
@@ -135,12 +139,12 @@ public class FileSystem {
             spawnData.put("scale",rectangle.getScale());
             spawn("rectangle",spawnData);
         }
-        else if(entityType==EntityType.CROSS_BAR){
-            EntityWrapper crossBar = model;
-            SpawnData spawnData = new SpawnData(crossBar.getPositionX(),crossBar.getPositionY());
-            spawnData.put("type",crossBar.getDirection());
-            spawn("crossBar",spawnData);
-        }
+//        else if(entityType==EntityType.CROSS_BAR){
+//            EntityWrapper crossBar = model;
+//            SpawnData spawnData = new SpawnData(crossBar.getPositionX(),crossBar.getPositionY());
+//            spawnData.put("type",crossBar.getDirection());
+//            spawn("crossBar",spawnData);
+//        }
     }
     private EntityWrapper getModel(Entity entity){
         EntityWrapper model=null;
@@ -227,7 +231,6 @@ public class FileSystem {
         EntityPlacer entityPlacer = EntityPlacer.getEntityPlacer();
         HashMap<Integer, Entity> hashMap = entityPlacer.getEntityMap();
         for(int key : hashMap.keySet()){
-            //GameComponent model = hashMap.get(key).getComponent()
             Entity entity = hashMap.get(key);
             EntityWrapper model;
             model = getModel(entity);

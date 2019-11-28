@@ -10,20 +10,12 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Sphere;
-import javafx.scene.shape.TriangleMesh;
-import org.w3c.dom.CDATASection;
 import xyz.makise.bball.components.*;
-import xyz.makise.bball.model.Ball;
 import xyz.makise.bball.model.EntityType;
-import xyz.makise.bball.model.Triangle;
-
-import java.awt.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -43,6 +35,7 @@ public class GameFactory implements EntityFactory {
     public Entity newBall(SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         int type = data.get("type");
+//        int type = 1;
         if (type == 0) {
             physicsComponent.setBodyType(BodyType.STATIC);
         } else {
@@ -264,11 +257,32 @@ public class GameFactory implements EntityFactory {
         entity.rotateBy(90 * direction);
 //
         entity.getBoundingBoxComponent().clearHitBoxes();
-//        HitBox hitBox = new HitBox(BoundingShape.chain(
-//                new Point2D(0, 0), new Point2D(0, 30),
-//                new Point2D(30, 0), new Point2D(30, 30)
+        HitBox hitBox1;
+        HitBox hitBox2;
+//        hitBox1 = new HitBox(BoundingShape.chain(
+//                new Point2D(-30, 0), new Point2D(-30, 30)
 //        ));
-//        entity.getBoundingBoxComponent().addHitBox(hitBox);
+//        hitBox2 = new HitBox(BoundingShape.chain(
+//                new Point2D(30,0), new Point2D(30,30)
+//        ));
+//        System.out.println(direction);
+        if (direction == 0 || direction == 2) {
+            hitBox1 = new HitBox(BoundingShape.chain(
+                    new Point2D(-30, 0), new Point2D(-30, 30)
+            ));
+            hitBox2 = new HitBox(BoundingShape.chain(
+                    new Point2D(30, 0), new Point2D(30, 30)
+            ));
+        } else {
+            hitBox1 = new HitBox(BoundingShape.chain(
+                    new Point2D(0, 30), new Point2D(30, 30)
+            ));
+            hitBox2 = new HitBox(BoundingShape.chain(
+                    new Point2D(0, -30), new Point2D(30, -30)
+            ));
+        }
+        entity.getBoundingBoxComponent().addHitBox(hitBox1);
+        entity.getBoundingBoxComponent().addHitBox(hitBox2);
         return entity;
     }
 
@@ -285,8 +299,6 @@ public class GameFactory implements EntityFactory {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
 
-        HitBox hitBox = new HitBox(BoundingShape.chain(new Point2D(0, 0), new Point2D(30, 0)));
-
         Entity entity = entityBuilder()
                 .type(EntityType.CURVED_PIPE)
                 .from(data)
@@ -297,8 +309,33 @@ public class GameFactory implements EntityFactory {
                 .with(scaleComponent)
                 .with(physicsComponent)
                 .build();
-        entity.rotateBy(90 * direction);
+
         entity.getBoundingBoxComponent().clearHitBoxes();
+        entity.rotateBy(90 * direction);
+
+        HitBox hitBox = null;
+
+        switch (direction) {
+            case 0: {
+                hitBox = new HitBox("left", BoundingShape.chain(new Point2D(0, -2), new Point2D(30, -2)));
+                break;
+            }
+            case 1: {
+                hitBox = new HitBox("right", BoundingShape.chain(new Point2D(0, -2), new Point2D(30, -2)));
+                break;
+            }
+            case 2: {
+                hitBox = new HitBox("left", BoundingShape.chain(new Point2D(entity.getX() + 30, entity.getY() + 60),
+                        new Point2D(entity.getX() + 60, entity.getY() + 60)));
+//                System.out.println(entity.getCenter());
+                break;
+            }
+            case 3: {
+                hitBox = new HitBox("right", BoundingShape.chain(new Point2D(0, 0), new Point2D(30, 0)));
+                break;
+            }
+        }
+
         entity.getBoundingBoxComponent().addHitBox(hitBox);
         return entity;
     }
