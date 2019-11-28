@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import javafx.scene.control.Alert;
 import xyz.makise.bball.MainGame;
 import xyz.makise.bball.components.CircleComponent;
+import xyz.makise.bball.components.CrossBarComponent;
 import xyz.makise.bball.components.DirectionComponent;
 import xyz.makise.bball.components.EntityPlacer;
 
@@ -133,6 +134,12 @@ public class FileSystem {
             spawnData.put("scale",rectangle.getLength());
             spawn("rectangle",spawnData);
         }
+        else if(entityType==EntityType.CROSS_BAR){
+            CrossBar crossBar = (CrossBar)model;
+            SpawnData spawnData = new SpawnData(crossBar.getCenterX(),crossBar.getCenterY());
+            spawnData.put("type",crossBar.getCrossbarType());
+            spawn("crossBar",spawnData);
+        }
     }
     private GameComponent getModel(Entity entity){
         GameComponent model=null;
@@ -186,13 +193,18 @@ public class FileSystem {
             );
         }
         else if(entity.getType()==EntityType.CROSS_BAR){
-
+            model = new CrossBar(
+                    entity.getX(),
+                    entity.getY(),
+                    entity.getComponent(CrossBarComponent.class).getType()
+            );
         }
         return model;
     }
     private void setChessBoard(){
         if(chessBoard==null)
             chessBoard=new ChessBoard();
+        chessBoard.clear();
         EntityPlacer entityPlacer = EntityPlacer.getEntityPlacer();
         HashMap<Integer, Entity> hashMap = entityPlacer.getEntityMap();
         for(int key : hashMap.keySet()){
