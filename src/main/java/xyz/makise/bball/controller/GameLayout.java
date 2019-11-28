@@ -5,13 +5,17 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.FileChooser;
 import xyz.makise.bball.MainGame;
 import xyz.makise.bball.model.EntityType;
+import xyz.makise.bball.model.FileSystem;
 
+import java.io.File;
 import java.util.List;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -59,6 +63,7 @@ public class GameLayout {
         return selectedButton.getText();
     }
 
+    @FXML
     public void startGame(){
         List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.BALL);
         for (Entity entity :
@@ -70,5 +75,52 @@ public class GameLayout {
             entity.removeFromWorld();
         }
         gameStarted = true;
+    }
+
+    @FXML
+    public void endGame(){
+        getGameWorld().removeEntities(getGameWorld().getEntities());
+        gameStarted = false;
+    }
+
+    @FXML
+    private void handleOpen() {
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+            FileSystem.getFileSystem().loadPersonDataFromFile(file);
+        }
+    }
+
+    /**
+     * Opens a FileChooser to let the user select a file to save to.
+     */
+    @FXML
+    private void handleSaveAs() {
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            FileSystem.getFileSystem().savePersonDataToFile(file);
+        }
     }
 }

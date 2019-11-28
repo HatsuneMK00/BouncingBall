@@ -77,6 +77,7 @@ public class FileSystem {
             setPersonFilePath(file);
 
         } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("Could not load data from file:\n" + file.getPath());
@@ -84,119 +85,137 @@ public class FileSystem {
         }
     }
     private void loadFromChessBoard(){
-        ArrayList<GameComponent> entityList = chessBoard.getComponents();
-        for(GameComponent model : entityList){
+        ArrayList<EntityWrapper> entityList = chessBoard.getComponents();
+        for(EntityWrapper model : entityList){
             spawnFromModel(model);
         }
     }
-    private void spawnFromModel(GameComponent model){
-        EntityType entityType = model.getType();
+    private void spawnFromModel(EntityWrapper model){
+        EntityType entityType = model.getEntityType();
         if(entityType==EntityType.TRIANGLE){
-            Triangle triangle = (Triangle) model;
+            EntityWrapper triangle = model;
             SpawnData spawnData = new SpawnData(triangle.getPositionX(),triangle.getPositionY());
-            spawnData.put("scale",triangle.getLength());
-            spawnData.put("direction",triangle.getLength());
+            spawnData.put("scale",triangle.getScale());
+            spawnData.put("direction",triangle.getDirection());
             spawn("triangle",spawnData);
         }
         else if(entityType==EntityType.BLACK_HOLE){
-            BlackHole blackHole = (BlackHole) model;
+            EntityWrapper blackHole = model;
             SpawnData spawnData = new SpawnData(blackHole.getPositionX(),blackHole.getPositionY());
-            spawnData.put("scale",blackHole.getLength());
+            spawnData.put("scale",blackHole.getScale());
             spawn("blackHole",spawnData);
         }
         else if(entityType==EntityType.CIRCLE){
-            Circle circle = (Circle)model;
-            SpawnData spawnData = new SpawnData(circle.getCircleCenterX(),circle.getCircleCenterY());
+            EntityWrapper circle = model;
+            SpawnData spawnData = new SpawnData(circle.getPositionX(),circle.getPositionY());
             spawnData.put("scale",circle.getScale());
             spawn("circle",spawnData);
         }
         else if(entityType==EntityType.BALL){
-            Ball ball = (Ball)model;
-            SpawnData spawnData = new SpawnData(ball.getBallCenterX(),ball.getBallCenterY());
+            EntityWrapper ball = model;
+            SpawnData spawnData = new SpawnData(ball.getPositionX(),ball.getPositionY());
             spawnData.put("scale",ball.getScale());
             spawn("ball",spawnData);
         }
         else if(entityType==EntityType.PIPE){
-            Pipe pipe = (Pipe)model;
+            EntityWrapper pipe = model;
             SpawnData spawnData = new SpawnData(pipe.getPositionX(),pipe.getPositionY());
             spawnData.put("direction",pipe.getDirection());
             spawn("pipe",spawnData);
         }
         else if(entityType==EntityType.CURVED_PIPE){
-            CurvedPipe curvedPipe = (CurvedPipe)model;
+            EntityWrapper curvedPipe = model;
             SpawnData spawnData = new SpawnData(curvedPipe.getPositionX(),curvedPipe.getPositionY());
             spawnData.put("direction",curvedPipe.getDirection());
             spawn("curvedPipe",spawnData);
         }
         else if(entityType==EntityType.RECTANGLE){
-            Rectangle rectangle = (Rectangle)model;
+            EntityWrapper rectangle = model;
             SpawnData spawnData = new SpawnData(rectangle.getPositionX(),rectangle.getPositionY());
-            spawnData.put("scale",rectangle.getLength());
+            spawnData.put("scale",rectangle.getScale());
             spawn("rectangle",spawnData);
         }
         else if(entityType==EntityType.CROSS_BAR){
-            CrossBar crossBar = (CrossBar)model;
-            SpawnData spawnData = new SpawnData(crossBar.getCenterX(),crossBar.getCenterY());
-            spawnData.put("type",crossBar.getCrossbarType());
+            EntityWrapper crossBar = model;
+            SpawnData spawnData = new SpawnData(crossBar.getPositionX(),crossBar.getPositionY());
+            spawnData.put("type",crossBar.getDirection());
             spawn("crossBar",spawnData);
         }
     }
-    private GameComponent getModel(Entity entity){
-        GameComponent model=null;
+    private EntityWrapper getModel(Entity entity){
+        EntityWrapper model=null;
         if(entity.getType()==EntityType.BALL){
-            model = new Ball(
-                    entity.getTransformComponent().getScaleX(),
+            model = new EntityWrapper(
+                    EntityType.BALL,
+                    -1,
+                    (int) entity.getTransformComponent().getScaleX(),
                     entity.getTransformComponent().getX(),
                     entity.getTransformComponent().getY());
         }
         else if(entity.getType()==EntityType.BLACK_HOLE){
-            model = new BlackHole(
+            model = new EntityWrapper(
+                    EntityType.BLACK_HOLE,
+                    -1,
+                    (int) entity.getTransformComponent().getScaleX(),
                     entity.getTransformComponent().getX(),
-                    entity.getTransformComponent().getY(),
-                    entity.getTransformComponent().getScaleX()
+                    entity.getTransformComponent().getY()
             );
         }
         else if(entity.getType()==EntityType.CURVED_PIPE){
-            model = new CurvedPipe(
+            model = new EntityWrapper(
+                    EntityType.CURVED_PIPE,
+                    entity.getComponent(DirectionComponent.class).getDirection(),
+                    -1,
                     entity.getTransformComponent().getX(),
-                    entity.getTransformComponent().getY(),
-                    entity.getComponent(DirectionComponent.class).getDirection()
+                    entity.getTransformComponent().getY()
             );
         }
         else if(entity.getType()==EntityType.PIPE){
-            model = new Pipe(
+            model = new EntityWrapper(
+                    EntityType.PIPE,
+                    entity.getComponent(DirectionComponent.class).getDirection(),
+                    -1,
                     entity.getTransformComponent().getX(),
-                    entity.getTransformComponent().getY(),
-                    entity.getComponent(DirectionComponent.class).getDirection()
+                    entity.getTransformComponent().getY()
+
             );
         }
         else if(entity.getType()==EntityType.CIRCLE){
-            model = new Circle(
-                    entity.getTransformComponent().getScaleX(),
+            model = new EntityWrapper(
+                    EntityType.CIRCLE,
+                    -1,
+                    (int) entity.getTransformComponent().getScaleX(),
                     entity.getTransformComponent().getX(),
                     entity.getTransformComponent().getY()
             );
         }
         else if(entity.getType()==EntityType.RECTANGLE){
-            model = new Rectangle(
+            model = new EntityWrapper(
+                    EntityType.RECTANGLE,
+                    -1,
+                    (int) entity.getTransformComponent().getScaleX(),
                     entity.getTransformComponent().getX(),
-                    entity.getTransformComponent().getY(),
-                    entity.getTransformComponent().getScaleX()
+                    entity.getTransformComponent().getY()
+
             );
         }
         else if(entity.getType()==EntityType.TRIANGLE){
-            model = new Triangle(
+            model = new EntityWrapper(
+                    EntityType.TRIANGLE,
+                    entity.getComponent(DirectionComponent.class).getDirection(),
+                    (int) entity.getScaleX(),
                     entity.getX(),
-                    entity.getY(),
-                    entity.getScaleX(),
-                    entity.getComponent(DirectionComponent.class).getDirection()
+                    entity.getY()
             );
         }
         else if(entity.getType()==EntityType.CROSS_BAR){
-            model = new CrossBar(
+            model = new EntityWrapper(
+                    EntityType.CROSS_BAR,
+                    entity.getComponent(CrossBarComponent.class).getType(),
+                    -1,
                     entity.getX(),
-                    entity.getY(),
-                    entity.getComponent(CrossBarComponent.class).getType()
+                    entity.getY()
+
             );
         }
         return model;
@@ -210,7 +229,7 @@ public class FileSystem {
         for(int key : hashMap.keySet()){
             //GameComponent model = hashMap.get(key).getComponent()
             Entity entity = hashMap.get(key);
-            GameComponent model;
+            EntityWrapper model;
             model = getModel(entity);
             chessBoard.getComponents().add(model);
         }
@@ -233,6 +252,7 @@ public class FileSystem {
             // Save the file path to the registry.
             setPersonFilePath(file);
         } catch (Exception e) { // catches ANY exception
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText("Could not save data to file:\n" + file.getPath());

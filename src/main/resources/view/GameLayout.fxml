@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.makise.bball.controller.GameLayout">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.makise.bball.controller.GameLayout">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -93,8 +93,8 @@
         </ImageView>
         <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="56.0" prefWidth="111.0" spacing="10.0" GridPane.rowIndex="2">
             <children>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="布局模式" GridPane.rowIndex="2" />
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="游玩模式" GridPane.rowIndex="2">
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#endGame" prefHeight="23.0" prefWidth="113.0" text="布局模式" GridPane.rowIndex="2" />
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#startGame" prefHeight="23.0" prefWidth="113.0" text="游玩模式" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -161,8 +161,8 @@
       </Label>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="56.0" prefWidth="111.0" spacing="10.0" GridPane.rowIndex="3">
          <children>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="Load file" GridPane.rowIndex="2" />
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="Save as..." GridPane.rowIndex="2">
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleOpen" prefHeight="23.0" prefWidth="113.0" text="Load file" GridPane.rowIndex="2" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleSaveAs" prefHeight="23.0" prefWidth="113.0" text="Save as..." GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -173,7 +173,4 @@
          </GridPane.margin>
       </VBox>
     </children>
-   <padding>
-      <Insets left="2.0" />
-   </padding>
 </GridPane>

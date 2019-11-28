@@ -249,6 +249,8 @@ public class GameFactory implements EntityFactory {
 
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
+        physicsComponent.setFixtureDef(new FixtureDef().restitution(1));
+//        这边真的神奇的很 完全不知道为什么viewWithBBox的旋转中心是正确的
         Entity entity = entityBuilder()
                 .type(EntityType.PIPE)
                 .from(data)
@@ -260,6 +262,13 @@ public class GameFactory implements EntityFactory {
                 .collidable()
                 .build();
         entity.rotateBy(90 * direction);
+//
+        entity.getBoundingBoxComponent().clearHitBoxes();
+//        HitBox hitBox = new HitBox(BoundingShape.chain(
+//                new Point2D(0, 0), new Point2D(0, 30),
+//                new Point2D(30, 0), new Point2D(30, 30)
+//        ));
+//        entity.getBoundingBoxComponent().addHitBox(hitBox);
         return entity;
     }
 
@@ -268,11 +277,15 @@ public class GameFactory implements EntityFactory {
         int direction = data.get("direction");
         DirectionComponent directionComponent = new DirectionComponent();
         directionComponent.setDirection(direction);
+
         int scale = data.get("scale");
         ScaleComponent scaleComponent = new ScaleComponent();
         scaleComponent.setScale(scale);
+
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
+
+        HitBox hitBox = new HitBox(BoundingShape.chain(new Point2D(0, 0), new Point2D(30, 0)));
 
         Entity entity = entityBuilder()
                 .type(EntityType.CURVED_PIPE)
@@ -285,6 +298,8 @@ public class GameFactory implements EntityFactory {
                 .with(physicsComponent)
                 .build();
         entity.rotateBy(90 * direction);
+        entity.getBoundingBoxComponent().clearHitBoxes();
+        entity.getBoundingBoxComponent().addHitBox(hitBox);
         return entity;
     }
 

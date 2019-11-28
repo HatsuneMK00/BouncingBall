@@ -3,6 +3,7 @@ package xyz.makise.bball.model;
 import com.almasb.fxgl.core.collection.Array;
 
 import com.almasb.fxgl.entity.Entity;
+import javafx.fxml.FXML;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,17 +19,18 @@ import java.util.ArrayList;
 @XmlRootElement(name = "ChessBoard")
 public class ChessBoard {
 //    用于保存所有被加入进棋盘的游戏组件
-    @XmlElement(name = "component")
-    private ArrayList<GameComponent> components = new ArrayList<>();
-    public ArrayList<GameComponent> getComponents() {
+
+    private ArrayList<EntityWrapper> components = new ArrayList<>();
+    @XmlElement(name = "entity")
+    public ArrayList<EntityWrapper> getComponents() {
         return components;
     }
 
-    public void setComponents(ArrayList<GameComponent> components) {
+    public void setComponents(ArrayList<EntityWrapper> components) {
         this.components = components;
     }
 
-//    清空棋盘
+    //    清空棋盘
 public void clear(){
         components.clear();
     }

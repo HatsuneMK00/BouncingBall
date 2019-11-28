@@ -2,7 +2,7 @@ package xyz.makise.bball.model;
 
 import com.almasb.fxgl.entity.Entity;
 
-public abstract class GameComponent {
+public class GameComponent {
     private EntityType type;
 
     public EntityType getType() {

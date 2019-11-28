@@ -89,15 +89,18 @@ public class EntityPlacer {
                 break;
             }
 //            left cross bar
-            case "left cross bar":{
+            case "L cross bar":{
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
                 entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",0));
                 break;
             }
 //            right cross bar
-            case "right cross bar":{
-
+            case "R cross bar":{
+                entityCount++;
+                map[(int) (x / 30)][(int) (y / 30)] = entityCount;
+                entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",1));
+                break;
             }
             default: {
                 System.out.println(name);

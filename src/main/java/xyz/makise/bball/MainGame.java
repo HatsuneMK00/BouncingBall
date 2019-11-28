@@ -5,7 +5,6 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -108,7 +107,7 @@ public class MainGame extends GameApplication {
             protected void onAction() {
                 leftCrossBar.left();
             }
-        }, KeyCode.A);
+        }, KeyCode.Z);
 
         getInput().addAction(new UserAction("right") {
             @Override
@@ -120,7 +119,7 @@ public class MainGame extends GameApplication {
             protected void onAction() {
                 leftCrossBar.right();
             }
-        }, KeyCode.D);
+        }, KeyCode.C);
 
         getInput().addAction(new UserAction("left2") {
             @Override
@@ -132,7 +131,7 @@ public class MainGame extends GameApplication {
             protected void onAction() {
                 rightCrossBar.left();
             }
-        }, KeyCode.LEFT);
+        }, KeyCode.B);
 
         getInput().addAction(new UserAction("right2") {
             @Override
@@ -144,7 +143,17 @@ public class MainGame extends GameApplication {
             protected void onAction() {
                 rightCrossBar.right();
             }
-        }, KeyCode.RIGHT);
+        }, KeyCode.M);
+
+        getInput().addAction(new UserAction("delete") {
+            @Override
+            protected void onActionBegin() {
+                if (currentEntity != null){
+                    getPhysicsWorld().onEntityRemoved(currentEntity);
+                    currentEntity.removeFromWorld();
+                }
+            }
+        },KeyCode.D);
     }
 
 
@@ -154,34 +163,18 @@ public class MainGame extends GameApplication {
      * */
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PIPE, EntityType.BALL) {
-
-            @Override
-            protected void onCollisionEnd(Entity pipe, Entity ball) {
-                int direction = pipe.getComponent(PipeComponent.class).getDirection();
-                if (direction == 1) {
-                    ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 100);
-                } else {
-                    ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, 0);
-                    System.out.println("collide with pipe");
-                }
-            }
-
-            @Override
-            protected void onHitBoxTrigger(Entity a, Entity b, HitBox boxA, HitBox boxB) {
-                System.out.println("1");
-            }
-
-            @Override
-            protected void onCollisionBegin(Entity a, Entity b) {
-                System.out.println(2);
-            }
-
-            @Override
-            protected void onCollision(Entity a, Entity b) {
-                System.out.println(3);
-            }
-        });
+//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PIPE, EntityType.BALL) {
+//
+//            @Override
+//            protected void onCollisionBegin(Entity pipe, Entity ball) {
+//                Point2D velocity = ball.getComponent(PhysicsComponent.class).getLinearVelocity();
+//                Point2D newVelocity = new Point2D(0,velocity.getY()*1.2);
+//                getPhysicsWorld().onEntityRemoved(ball);
+//                ball.removeFromWorld();
+//                Entity newBall = spawn("ball",new SpawnData(pipe.getX()+30,pipe.getY()+30).put("type",1));
+//                newBall.getComponent(PhysicsComponent.class).setLinearVelocity(newVelocity);
+//            }
+//        });
 
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.CURVED_PIPE, EntityType.BALL) {
             @Override
@@ -189,12 +182,11 @@ public class MainGame extends GameApplication {
                 int direction = curvedPipe.getComponent(CurvedPipeComponent.class).getDirection();
                 switch (direction) {
                     case 0: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(100, 0);
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(500, 0);
                         break;
                     }
                     case 1: {
-                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(0, -100);
-                        ;
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(-500, 0);
                         break;
                     }
                     case 2: {
