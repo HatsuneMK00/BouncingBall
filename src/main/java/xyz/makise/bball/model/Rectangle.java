@@ -4,17 +4,17 @@ import com.almasb.fxgl.entity.Entity;
 
 public class Rectangle extends GameComponent {
 //    正方形左上角位置
-    private int positionX;
-    private int positionY;
+    private double positionX;
+    private double positionY;
 //    边长
-    private int length;
+    private double length;
 
     public Rectangle() {
         super();
         super.setType(EntityType.RECTANGLE);
     }
 
-    public Rectangle(int positionX, int positionY, int length) {
+    public Rectangle(double positionX, double positionY, double length) {
         super();
         super.setType(EntityType.RECTANGLE);
         this.positionX = positionX;
@@ -22,27 +22,27 @@ public class Rectangle extends GameComponent {
         this.length = length;
     }
 
-    public int getPositionX() {
+    public double getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(double positionX) {
         this.positionX = positionX;
     }
 
-    public int getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionY(double positionY) {
         this.positionY = positionY;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 }

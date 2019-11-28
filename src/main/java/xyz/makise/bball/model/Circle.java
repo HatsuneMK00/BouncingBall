@@ -4,45 +4,45 @@ import com.almasb.fxgl.entity.Entity;
 
 public class Circle extends GameComponent {
 //    半径
-    private int radius;
+    private double scale;
 //    圆心位置
-    private int circleCenterX;
-    private int circleCenterY;
+    private double circleCenterX;
+    private double circleCenterY;
 
     public Circle() {
         super();
         super.setType(EntityType.CIRCLE);
     }
 
-    public Circle(int radius, int circleCenterX, int circleCenterY) {
+    public Circle(double scale, double circleCenterX, double circleCenterY) {
         super();
         super.setType(EntityType.CIRCLE);
-        this.radius = radius;
+        this.scale = scale;
         this.circleCenterX = circleCenterX;
         this.circleCenterY = circleCenterY;
     }
 
-    public int getRadius() {
-        return radius;
+    public double getScale() {
+        return scale;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public void setScale(double scale) {
+        this.scale = scale;
     }
 
-    public int getCircleCenterX() {
+    public double getCircleCenterX() {
         return circleCenterX;
     }
 
-    public void setCircleCenterX(int circleCenterX) {
+    public void setCircleCenterX(double circleCenterX) {
         this.circleCenterX = circleCenterX;
     }
 
-    public int getCircleCenterY() {
+    public double getCircleCenterY() {
         return circleCenterY;
     }
 
-    public void setCircleCenterY(int circleCenterY) {
+    public void setCircleCenterY(double circleCenterY) {
         this.circleCenterY = circleCenterY;
     }
 }

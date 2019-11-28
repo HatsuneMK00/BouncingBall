@@ -4,45 +4,55 @@ import com.almasb.fxgl.entity.Entity;
 
 public class Triangle extends GameComponent {
 //    直角位置
-    private int rightAngleX;
-    private int rightAngleY;
+    private double positionX;
+    private double positionY;
 //    边长
-    private int length;
+    private double length;
+    private double direction;
 
     public Triangle() {
         super();
         super.setType(EntityType.TRIANGLE);
     }
 
-    public Triangle(int rightAngleX, int rightAngleY, int length) {
+    public Triangle(double positionX, double positionY, double length,double direction) {
         super();
         super.setType(EntityType.TRIANGLE);
-        this.rightAngleX = rightAngleX;
-        this.rightAngleY = rightAngleY;
+        this.positionX = positionX;
+        this.positionY = positionY;
         this.length = length;
+        this.direction = direction;
     }
 
-    public int getRightAngleX() {
-        return rightAngleX;
+    public double getDirection() {
+        return direction;
     }
 
-    public void setRightAngleX(int rightAngleX) {
-        this.rightAngleX = rightAngleX;
+    public void setDirection(double direction) {
+        this.direction = direction;
     }
 
-    public int getRightAngleY() {
-        return rightAngleY;
+    public double getPositionX() {
+        return positionX;
     }
 
-    public void setRightAngleY(int rightAngleY) {
-        this.rightAngleY = rightAngleY;
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
     }
 
-    public int getLength() {
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(double positionY) {
+        this.positionY = positionY;
+    }
+
+    public double getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 }

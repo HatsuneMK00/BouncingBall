@@ -4,45 +4,45 @@ import com.almasb.fxgl.entity.Entity;
 
 public class Ball extends GameComponent {
 //    半径
-    private int radius;
+    private double scale;
 //    圆心位置
-    private int ballCenterX;
-    private int ballCenterY;
+    private double ballCenterX;
+    private double ballCenterY;
 
     public Ball() {
      super();
      super.setType(EntityType.BALL);
     }
 
-    public Ball(int radius, int ballCenterX, int ballCenterY) {
+    public Ball(double scale, double ballCenterX, double ballCenterY) {
         super();
         super.setType(EntityType.BALL);
-        this.radius = radius;
+        this.scale = scale;
         this.ballCenterX = ballCenterX;
         this.ballCenterY = ballCenterY;
     }
 
-    public int getRadius() {
-        return radius;
+    public double getScale() {
+        return scale;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public void setScale(double scale) {
+        this.scale = scale;
     }
 
-    public int getBallCenterX() {
+    public double getBallCenterX() {
         return ballCenterX;
     }
 
-    public void setBallCenterX(int ballCenterX) {
+    public void setBallCenterX(double ballCenterX) {
         this.ballCenterX = ballCenterX;
     }
 
-    public int getBallCenterY() {
+    public double getBallCenterY() {
         return ballCenterY;
     }
 
-    public void setBallCenterY(int ballCenterY) {
+    public void setBallCenterY(double ballCenterY) {
         this.ballCenterY = ballCenterY;
     }
 }

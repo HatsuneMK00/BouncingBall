@@ -4,45 +4,44 @@ import com.almasb.fxgl.entity.Entity;
 
 public class Pipe extends GameComponent {
 //    左上角位置
-    private int positionX;
-    private int positionY;
-//    边长
-    private int length;
+    private double positionX;
+    private double positionY;
+    private double direction;
 
     public Pipe() {
         super();
         super.setType(EntityType.PIPE);
     }
 
-    public Pipe(int positionX, int positionY, int length) {
+    public Pipe(double positionX, double positionY,double direction) {
         super();
         super.setType(EntityType.PIPE);
         this.positionX = positionX;
         this.positionY = positionY;
-        this.length = length;
+        this.direction=direction;
     }
 
-    public int getPositionX() {
+    public double getDirection() {
+        return direction;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
+
+    public double getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(double positionX) {
         this.positionX = positionX;
     }
 
-    public int getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionY(double positionY) {
         this.positionY = positionY;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
     }
 }

@@ -6,8 +6,7 @@ public class CrossBar extends GameComponent {
 //    中心坐标
     private int centerX;
     private int centerY;
-//    杆长
-    private int length;
+    private String crossbarType;
 
     public CrossBar() {
         super();
@@ -19,7 +18,6 @@ public class CrossBar extends GameComponent {
         super.setType(EntityType.CROSS_BAR);
         this.centerX = centerX;
         this.centerY = centerY;
-        this.length = length;
     }
 
     public int getCenterX() {
@@ -36,13 +34,5 @@ public class CrossBar extends GameComponent {
 
     public void setCenterY(int centerY) {
         this.centerY = centerY;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
     }
 }
