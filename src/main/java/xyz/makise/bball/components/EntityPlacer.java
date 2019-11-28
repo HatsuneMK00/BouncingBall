@@ -13,6 +13,16 @@ public class EntityPlacer {
     private static int entityCount = 0;
     private EntityRotator entityRotator = new EntityRotator();
     private EntityZoomer entityZoomer = new EntityZoomer();
+    private static EntityPlacer entityPlacer;
+    private EntityPlacer(){
+
+    }
+
+    public static EntityPlacer getEntityPlacer() {
+        if(entityPlacer==null)
+            entityPlacer=new EntityPlacer();
+        return entityPlacer;
+    }
 
     public HashMap<Integer, Entity> getEntityMap() {
         return entityMap;

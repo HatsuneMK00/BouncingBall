@@ -12,4 +12,5 @@ public abstract class GameComponent {
     public void setType(EntityType type) {
         this.type = type;
     }
+    //abstract public GameComponent getModel();
 }

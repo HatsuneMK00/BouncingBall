@@ -1,12 +1,16 @@
 package xyz.makise.bball.model;
 
+import com.almasb.fxgl.entity.Entity;
 import javafx.scene.control.Alert;
 import xyz.makise.bball.MainGame;
+import xyz.makise.bball.components.CircleComponent;
+import xyz.makise.bball.components.EntityPlacer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 public class FileSystem {
@@ -74,7 +78,15 @@ public class FileSystem {
             alert.showAndWait();
         }
     }
-
+    private void SetChessBoard(){
+        if(chessBoard==null)
+            chessBoard=new ChessBoard();
+        EntityPlacer entityPlacer = EntityPlacer.getEntityPlacer();
+        HashMap<Integer, Entity> hashMap = entityPlacer.getEntityMap();
+        for(int key : hashMap.keySet()){
+            //GameComponent model = hashMap.get(key).getComponent()
+        }
+    }
     public void savePersonDataToFile(File file) {
         try {
             JAXBContext context = JAXBContext

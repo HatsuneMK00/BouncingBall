@@ -29,7 +29,6 @@ public class MainGame extends GameApplication {
     //    private MyComponent currentComponent;
     private CrossBarComponent crossBar;
     private GameLayout gameUiController;
-    private EntityPlacer entityPlacer = new EntityPlacer();
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -51,21 +50,21 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("rotate") {
             @Override
             protected void onActionBegin() {
-                currentEntity = entityPlacer.rotate(currentEntity);
+                currentEntity = EntityPlacer.getEntityPlacer().rotate(currentEntity);
             }
         }, KeyCode.Y);
 
         getInput().addAction(new UserAction("zoomOut") {
             @Override
             protected void onActionBegin() {
-                currentEntity = entityPlacer.zoomOut(currentEntity);
+                currentEntity = EntityPlacer.getEntityPlacer().zoomOut(currentEntity);
             }
         }, KeyCode.K);
 
         getInput().addAction(new UserAction("zoomIn") {
             @Override
             protected void onActionBegin() {
-                currentEntity = entityPlacer.zoomIn(currentEntity);
+                currentEntity = EntityPlacer.getEntityPlacer().zoomIn(currentEntity);
             }
         }, KeyCode.L);
 
@@ -76,7 +75,7 @@ public class MainGame extends GameApplication {
                 System.out.println(mousePosition);
                 double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
                 double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
-                currentEntity = entityPlacer.placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
+                currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
                         justifiedY);
             }
         }, MouseButton.PRIMARY);
