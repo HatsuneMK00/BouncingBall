@@ -53,7 +53,7 @@ public class GameFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.BALL)
                 .from(data)
-                .view(new Circle(12, Color.RED))
+                .view(new Circle(12, Color.BLUEVIOLET))
                 .bbox(new HitBox(location, BoundingShape.circle(12)))
                 .collidable()
                 .with(physicsComponent)
@@ -148,8 +148,8 @@ public class GameFactory implements EntityFactory {
         Polygon polygon = new Polygon();
         double x = data.getX();
         double y = data.getY();
-        System.out.println(x);
-        System.out.println(y);
+//        System.out.println(x);
+//        System.out.println(y);
         polygon.setFill(Color.RED);
         switch (direction) {
             case 0: {
@@ -168,39 +168,39 @@ public class GameFactory implements EntityFactory {
             case 1: {
                 polygon.getPoints().addAll(
                         0.0, 0.0,
-                        length, 0.0,
-                        0.0, -length
+                        length, length,
+                        0.0, length
                 );
                 hitBox = new HitBox(BoundingShape.polygon(
-                        length, 0.0,
+                        length, length,
                         0.0, 0.0,
-                        0.0, -length
+                        0.0, length
                 ));
                 break;
             }
             case 2: {
                 polygon.getPoints().addAll(
-                        0.0, 0.0,
-                        -length, 0.0,
-                        0.0, -length
+                        length, length,
+                        length, 0.0,
+                        0.0, length
                 );
                 hitBox = new HitBox(BoundingShape.polygon(
-                        -length, 0.0,
-                        0.0, 0.0,
-                        0.0, -length
+                        length, 0.0,
+                        length, length,
+                        0.0, length
                 ));
                 break;
             }
             case 3: {
                 polygon.getPoints().addAll(
                         0.0, 0.0,
-                        -length, 0.0,
-                        0.0, length
+                        length, 0.0,
+                        length, length
                 );
                 hitBox = new HitBox(BoundingShape.polygon(
-                        -length, 0.0,
+                        length, 0.0,
                         0.0, 0.0,
-                        0.0, length
+                        length, length
                 ));
                 break;
             }
