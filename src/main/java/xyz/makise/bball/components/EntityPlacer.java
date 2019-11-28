@@ -106,4 +106,8 @@ public class EntityPlacer {
     public Entity zoomIn(Entity entity){
         return entityZoomer.zoomIn(entity,this);
     }
+
+    public boolean isOutOfBound(double x,double y){
+
+    }
 }

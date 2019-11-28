@@ -61,6 +61,14 @@ public class MainGame extends GameApplication {
             }
         }, KeyCode.K);
 
+        getInput().addAction(new UserAction("startGame") {
+            @Override
+            protected void onActionBegin() {
+                Entity entity = spawn("crossBar",300,570);
+                crossBar = entity.getComponent(CrossBarComponent.class);
+            }
+        }, KeyCode.S);
+
         getInput().addAction(new UserAction("zoomIn") {
             @Override
             protected void onActionBegin() {
@@ -175,6 +183,15 @@ public class MainGame extends GameApplication {
             }
         });
 
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.BLACK_HOLE, EntityType.BALL) {
+            @Override
+            protected void onCollisionBegin(Entity blackHole, Entity ball) {
+                getPhysicsWorld().onEntityRemoved(ball);
+                ball.removeFromWorld();
+                System.out.println("generate next ball");
+            }
+        });
+
     }
 
     /*
@@ -187,6 +204,7 @@ public class MainGame extends GameApplication {
         initUIView();
         initBoard();
         initGameEntity();
+        spawn("wall",0,0);
     }
 
     private void initBoard() {

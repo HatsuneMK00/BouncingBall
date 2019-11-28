@@ -221,10 +221,13 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("blackHole")
     public Entity newBlackHole(SpawnData data) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+
         return entityBuilder()
                 .type(EntityType.BLACK_HOLE)
                 .from(data)
-                .view("blackHole.png")
+                .viewWithBBox("blackHole.png")
                 .collidable()
                 .build();
     }
@@ -268,7 +271,7 @@ public class GameFactory implements EntityFactory {
         Entity entity =  entityBuilder()
                 .type(EntityType.CURVED_PIPE)
                 .from(data)
-                .view("curvedPipe.png")
+                .viewWithBBox("curvedPipe.png")
                 .collidable()
                 .with(new CurvedPipeComponent())
                 .with(directionComponent)
@@ -281,10 +284,15 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("crossBar")
     public Entity newCrossBar(SpawnData data) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.KINEMATIC);
+
         return entityBuilder()
                 .type(EntityType.CROSS_BAR)
                 .from(data)
-                .view("crossBar.png")
+                .viewWithBBox("crossBar.png")
+                .with(physicsComponent)
+                .with(new CrossBarComponent())
                 .collidable()
                 .build();
     }
@@ -294,6 +302,24 @@ public class GameFactory implements EntityFactory {
         return entityBuilder()
                 .from(data)
                 .view(new Rectangle(29, 29, Color.BLACK))
+                .build();
+    }
+
+    @Spawns("wall")
+    public Entity newWall(SpawnData data){
+        HitBox hitBox = new HitBox(BoundingShape.chain(
+                new Point2D(600, 0), new Point2D(600, 600),
+                new Point2D(599,599),new Point2D(1,599),
+                new Point2D(0,600),new Point2D(0,0),
+                new Point2D(1,1),new Point2D(599,1)
+
+        ));
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.STATIC);
+        return entityBuilder()
+                .from(data)
+                .bbox(hitBox)
+                .with(physicsComponent)
                 .build();
     }
 }

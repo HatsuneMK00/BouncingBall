@@ -5,6 +5,10 @@ import com.almasb.fxgl.entity.component.Component;
 
 
 public class CurvedPipeComponent extends Component {
+    public void onAdded() {
+        entity.getTransformComponent().setScaleOrigin(entity.getCenter());
+    }
+
     private int direction = 0;
 
     public int getDirection() {
