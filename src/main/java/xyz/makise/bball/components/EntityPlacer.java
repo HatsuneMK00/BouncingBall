@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.SpawnData;
 
 import java.util.HashMap;
 
+import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class EntityPlacer {
@@ -87,6 +88,12 @@ public class EntityPlacer {
                 entity = spawn("curvedPipe", new SpawnData(x,y).put("scale",1).put("direction",0));
                 break;
             }
+            case "cross bar":{
+                entityCount++;
+                map[(int) (x / 30)][(int) (y / 30)] = entityCount;
+                entity = spawn("", new SpawnData(x,y).put("scale",1).put("direction",0));
+                break;
+            }
             default: {
                 System.out.println(name);
             }
@@ -108,6 +115,6 @@ public class EntityPlacer {
     }
 
     public boolean isOutOfBound(double x,double y){
-
+        return x > getAppWidth() - 250;
     }
 }

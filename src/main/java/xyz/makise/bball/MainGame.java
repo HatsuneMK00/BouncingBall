@@ -79,10 +79,12 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("click") {
             @Override
             protected void onActionBegin() {
+
                 Point2D mousePosition = getInput().getMousePositionWorld();
                 System.out.println(mousePosition);
                 double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
                 double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
+                if (EntityPlacer.getEntityPlacer().isOutOfBound(justifiedX,justifiedY)) return;
                 currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
                         justifiedY);
             }
