@@ -27,7 +27,8 @@ public class MainGame extends GameApplication {
     private Entity ball;
     private Entity currentEntity;
     //    private MyComponent currentComponent;
-    private CrossBarComponent crossBar;
+    private CrossBarComponent leftCrossBar;
+    private CrossBarComponent rightCrossBar;
     private GameLayout gameUiController;
 
     @Override
@@ -52,7 +53,7 @@ public class MainGame extends GameApplication {
             protected void onActionBegin() {
                 currentEntity = EntityPlacer.getEntityPlacer().rotate(currentEntity);
             }
-        }, KeyCode.Y);
+        }, KeyCode.R);
 
         getInput().addAction(new UserAction("zoomOut") {
             @Override
@@ -64,8 +65,9 @@ public class MainGame extends GameApplication {
         getInput().addAction(new UserAction("startGame") {
             @Override
             protected void onActionBegin() {
-                Entity entity = spawn("crossBar",300,570);
-                crossBar = entity.getComponent(CrossBarComponent.class);
+//                Entity entity = spawn("crossBar",300,570);
+//                leftCrossBar = entity.getComponent(CrossBarComponent.class);
+                gameUiController.startGame();
             }
         }, KeyCode.S);
 
@@ -84,43 +86,66 @@ public class MainGame extends GameApplication {
                 System.out.println(mousePosition);
                 double justifiedX = (int) (mousePosition.getX() / 30) * 30.0;
                 double justifiedY = (int) (mousePosition.getY() / 30) * 30.0;
-                if (EntityPlacer.getEntityPlacer().isOutOfBound(justifiedX,justifiedY)) return;
+                if (EntityPlacer.getEntityPlacer().isOutOfBound(justifiedX, justifiedY)) return;
                 currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), justifiedX,
                         justifiedY);
+                if (currentEntity.hasComponent(CrossBarComponent.class)) {
+                    if (currentEntity.getComponent(CrossBarComponent.class).getType() == 0) {
+                        leftCrossBar = currentEntity.getComponent(CrossBarComponent.class);
+                    } else {
+                        rightCrossBar = currentEntity.getComponent(CrossBarComponent.class);
+                    }
+                }
             }
         }, MouseButton.PRIMARY);
-
-        getInput().addAction(new UserAction("begin") {
-            @Override
-            protected void onActionBegin() {
-//                getPhysicsWorld().setGravity(0,100);
-                ball = spawn("ball", 195, 45);
-            }
-        }, KeyCode.B);
 
         getInput().addAction(new UserAction("left") {
             @Override
             protected void onActionEnd() {
-                crossBar.stop();
+                leftCrossBar.stop();
             }
 
             @Override
             protected void onAction() {
-                crossBar.left();
+                leftCrossBar.left();
             }
         }, KeyCode.A);
 
         getInput().addAction(new UserAction("right") {
             @Override
             protected void onActionEnd() {
-                crossBar.stop();
+                leftCrossBar.stop();
             }
 
             @Override
             protected void onAction() {
-                crossBar.right();
+                leftCrossBar.right();
             }
         }, KeyCode.D);
+
+        getInput().addAction(new UserAction("left2") {
+            @Override
+            protected void onActionEnd() {
+                rightCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                rightCrossBar.left();
+            }
+        }, KeyCode.LEFT);
+
+        getInput().addAction(new UserAction("right2") {
+            @Override
+            protected void onActionEnd() {
+                rightCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                rightCrossBar.right();
+            }
+        }, KeyCode.RIGHT);
     }
 
 
@@ -206,7 +231,7 @@ public class MainGame extends GameApplication {
         initUIView();
         initBoard();
         initGameEntity();
-        spawn("wall",0,0);
+        spawn("wall", 0, 0);
     }
 
     private void initBoard() {
