@@ -15,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import xyz.makise.bball.components.*;
 import xyz.makise.bball.controller.GameLayout;
 import xyz.makise.bball.model.EntityType;
-import xyz.makise.bball.model.FileSystem;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 

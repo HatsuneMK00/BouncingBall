@@ -88,11 +88,16 @@ public class EntityPlacer {
                 entity = spawn("curvedPipe", new SpawnData(x,y).put("scale",1).put("direction",0));
                 break;
             }
-            case "cross bar":{
+//            left cross bar
+            case "left cross bar":{
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
                 entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",0));
                 break;
+            }
+//            right cross bar
+            case "right cross bar":{
+
             }
             default: {
                 System.out.println(name);

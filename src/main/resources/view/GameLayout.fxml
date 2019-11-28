@@ -9,14 +9,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="406.0" prefWidth="195.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.makise.bball.controller.GameLayout">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.makise.bball.controller.GameLayout">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="222.0" minHeight="10.0" prefHeight="211.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="134.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="160.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
         <Label text="组件栏">
@@ -50,17 +51,17 @@
                 <RadioButton fx:id="blackHole" mnemonicParsing="false" text="black hole" toggleGroup="$toggleGroup" GridPane.rowIndex="1" />
                 <RadioButton fx:id="circle" mnemonicParsing="false" text="circle" toggleGroup="$toggleGroup" GridPane.rowIndex="2" />
                 <RadioButton fx:id="pipe" mnemonicParsing="false" text="pipe" toggleGroup="$toggleGroup" GridPane.rowIndex="3" />
-                <RadioButton fx:id="crossBar" mnemonicParsing="false" text="cross bar" toggleGroup="$toggleGroup" GridPane.rowIndex="4" />
+                <RadioButton fx:id="leftCrossBar" mnemonicParsing="false" text="L cross bar" toggleGroup="$toggleGroup" GridPane.rowIndex="4" />
                 <RadioButton fx:id="ball" mnemonicParsing="false" text="ball" toggleGroup="$toggleGroup" GridPane.columnIndex="1" />
                 <RadioButton fx:id="triangle" mnemonicParsing="false" text="triangle" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <RadioButton fx:id="rectangle" mnemonicParsing="false" text="rectangle" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <RadioButton fx:id="curvedPipe" mnemonicParsing="false" text="curved pipe" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <RadioButton mnemonicParsing="false" text="cross bar" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <RadioButton fx:id="rightCrossBar" mnemonicParsing="false" text="R cross bar" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="20.0" top="-30.0" />
+                <Insets left="20.0" top="-50.0" />
             </GridPane.margin>
             <image>
                 <Image url="@../assets/textures/rotate.png" />
@@ -68,7 +69,7 @@
         </ImageView>
         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="110.0" top="-30.0" />
+                <Insets left="120.0" top="-50.0" />
             </GridPane.margin>
             <image>
                 <Image url="@../assets/textures/delete.png" />
@@ -76,7 +77,7 @@
         </ImageView>
         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="110.0" top="60.0" />
+                <Insets left="120.0" top="80.0" />
             </GridPane.margin>
             <image>
                 <Image url="@../assets/textures/zoomout.png" />
@@ -84,7 +85,7 @@
         </ImageView>
         <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="20.0" top="60.0" />
+                <Insets left="20.0" top="80.0" />
             </GridPane.margin>
             <image>
                 <Image url="@../assets/textures/magnify.png" />
@@ -105,12 +106,74 @@
         </VBox>
         <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="22.0" prefWidth="57.0" text="工具栏" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="70.0" top="-90.0" />
+                <Insets left="70.0" top="-120.0" />
             </GridPane.margin>
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label text="Label" GridPane.rowIndex="2" />
+        <Label text="模式选择" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="65.0" top="-80.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label text="R" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="40.0" top="15.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label text="D" GridPane.rowIndex="1">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="140.0" top="15.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="K" GridPane.rowIndex="1">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="40.0" top="135.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="L" GridPane.rowIndex="1">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="140.0" top="135.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="文件系统" GridPane.rowIndex="3">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="65.0" top="-70.0" />
+         </GridPane.margin>
+      </Label>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="56.0" prefWidth="111.0" spacing="10.0" GridPane.rowIndex="3">
+         <children>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="Load file" GridPane.rowIndex="2" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="Save as..." GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+         </children>
+         <GridPane.margin>
+            <Insets left="40.0" top="20.0" />
+         </GridPane.margin>
+      </VBox>
     </children>
+   <padding>
+      <Insets left="2.0" />
+   </padding>
 </GridPane>
