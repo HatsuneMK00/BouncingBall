@@ -2,37 +2,34 @@ package xyz.makise.bball;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import xyz.makise.bball.components.BallComponent;
-import xyz.makise.bball.model.ChessBoard;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.util.prefs.Preferences;
+import xyz.makise.bball.components.*;
+import xyz.makise.bball.controller.GameLayout;
+import xyz.makise.bball.model.EntityType;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /*
-* 游戏的主类
-*
-* */
+ * 游戏的主类
+ *
+ * */
 public class MainGame extends GameApplication {
     private Entity ball;
-    private Entity triangle;
-    private int[][] map;//用于存储地图信息，0表示未占用，1表示为一般组件占用，2表示为三角形部件
+    private Entity currentEntity;
+    //    private MyComponent currentComponent;
+    private CrossBarComponent leftCrossBar;
+    private CrossBarComponent rightCrossBar;
+    private GameLayout gameUiController;
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setIntroEnabled(false);
@@ -44,23 +41,120 @@ public class MainGame extends GameApplication {
 
 
     /*
-    * 所有和输入初始化有关的工作
-    *
-    * */
+     * 所有和输入初始化有关的工作
+     *
+     * */
     @Override
     protected void initInput() {
 //        onKey(KeyCode.D,()->ball.rotateBy(90));
         getInput().addAction(new UserAction("rotate") {
             @Override
             protected void onActionBegin() {
-//                ball.rotateBy(90);
-//                triangle.rotateBy(90);
-                getGameWorld().removeEntity(ball);
-                ball = spawn("ball",150,180);
-//                ball.rotateToVector(new Point2D(90,90));
-
+                currentEntity = EntityPlacer.getEntityPlacer().rotate(currentEntity);
             }
-        },KeyCode.Y);
+        }, KeyCode.R);
+
+        getInput().addAction(new UserAction("zoomOut") {
+            @Override
+            protected void onActionBegin() {
+                currentEntity = EntityPlacer.getEntityPlacer().zoomOut(currentEntity);
+            }
+        }, KeyCode.K);
+
+        getInput().addAction(new UserAction("startGame") {
+            @Override
+            protected void onActionBegin() {
+//                Entity entity = spawn("crossBar",300,570);
+//                leftCrossBar = entity.getComponent(CrossBarComponent.class);
+                gameUiController.startGame();
+            }
+        }, KeyCode.S);
+
+        getInput().addAction(new UserAction("zoomIn") {
+            @Override
+            protected void onActionBegin() {
+                currentEntity = EntityPlacer.getEntityPlacer().zoomIn(currentEntity);
+            }
+        }, KeyCode.L);
+
+        getInput().addAction(new UserAction("click") {
+            @Override
+            protected void onActionBegin() {
+
+                Point2D mousePosition = getInput().getMousePositionWorld();
+                System.out.println(mousePosition);
+                double x = mousePosition.getX();
+                double y = mousePosition.getY();
+                if (EntityPlacer.getEntityPlacer().isOutOfBound(x, y)) return;
+                currentEntity = EntityPlacer.getEntityPlacer().placeEntity(gameUiController.getSelectedRadioButtonText(), x,
+                        y);
+                if (currentEntity.hasComponent(CrossBarComponent.class)) {
+                    if (currentEntity.getComponent(CrossBarComponent.class).getType() == 0) {
+                        leftCrossBar = currentEntity.getComponent(CrossBarComponent.class);
+                    } else {
+                        rightCrossBar = currentEntity.getComponent(CrossBarComponent.class);
+                    }
+                }
+            }
+        }, MouseButton.PRIMARY);
+
+        getInput().addAction(new UserAction("left") {
+            @Override
+            protected void onActionEnd() {
+                leftCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                leftCrossBar.left();
+            }
+        }, KeyCode.Z);
+
+        getInput().addAction(new UserAction("right") {
+            @Override
+            protected void onActionEnd() {
+                leftCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                leftCrossBar.right();
+            }
+        }, KeyCode.C);
+
+        getInput().addAction(new UserAction("left2") {
+            @Override
+            protected void onActionEnd() {
+                rightCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                rightCrossBar.left();
+            }
+        }, KeyCode.B);
+
+        getInput().addAction(new UserAction("right2") {
+            @Override
+            protected void onActionEnd() {
+                rightCrossBar.stop();
+            }
+
+            @Override
+            protected void onAction() {
+                rightCrossBar.right();
+            }
+        }, KeyCode.M);
+
+        getInput().addAction(new UserAction("delete") {
+            @Override
+            protected void onActionBegin() {
+                if (currentEntity != null){
+                    getPhysicsWorld().onEntityRemoved(currentEntity);
+                    currentEntity.removeFromWorld();
+                }
+            }
+        },KeyCode.D);
     }
 
 
@@ -70,11 +164,46 @@ public class MainGame extends GameApplication {
      * */
     @Override
     protected void initPhysics() {
-        super.initPhysics();
+//        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PIPE, EntityType.BALL) {
+//
+//            @Override
+//            protected void onCollisionBegin(Entity pipe, Entity ball) {
+//                Point2D velocity = ball.getComponent(PhysicsComponent.class).getLinearVelocity();
+//                Point2D newVelocity = new Point2D(0,velocity.getY()*1.2);
+//                getPhysicsWorld().onEntityRemoved(ball);
+//                ball.removeFromWorld();
+//                Entity newBall = spawn("ball",new SpawnData(pipe.getX()+30,pipe.getY()+30).put("type",1));
+//                newBall.getComponent(PhysicsComponent.class).setLinearVelocity(newVelocity);
+//            }
+//        });
 
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.CURVED_PIPE, EntityType.BALL) {
+            @Override
+            protected void onHitBoxTrigger(Entity a, Entity ball, HitBox boxA, HitBox boxB) {
+                String direction = boxA.getName();
+                switch (direction) {
+                    case "right": {
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(-500, 0);
+                        break;
+                    }
+                    case "left": {
+                        ball.getComponent(PhysicsComponent.class).setLinearVelocity(500, 0);
+                        break;
+                    }
+                }
+            }
+        });
+
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.BLACK_HOLE, EntityType.BALL) {
+            @Override
+            protected void onCollisionBegin(Entity blackHole, Entity ball) {
+                getPhysicsWorld().onEntityRemoved(ball);
+                ball.removeFromWorld();
+                System.out.println("generate next ball");
+            }
+        });
 
     }
-
 
     /*
      * 所有和游戏初始化有关的工作
@@ -83,22 +212,32 @@ public class MainGame extends GameApplication {
     @Override
     protected void initGame() {
         super.initGame();
-        showUIView();
-        map = new int[20][20];
-        getGameWorld().addEntityFactory(new GameFactory());
-        for(int i = 0;i<=570;i+=30){
-            for(int j=0;j<=570;j+=30){
-                spawn("block",i,j);
-            }
-        }
-        ball = spawn("ball",180,180);
-        PhysicsComponent physicsComponent = new PhysicsComponent();
-        getPhysicsWorld().setGravity(0,0);
-        triangle = spawn("triangle", 30, 30);
-        System.out.println(ball.getCenter());
+        initUIView();
+        initBoard();
+        initGameEntity();
+        spawn("wall", 0, 0);
     }
 
-    private void showUIView(){
+    private void initBoard() {
+        getGameWorld().addEntityFactory(new GameFactory());
+        for (int i = 0; i <= 570; i += 30) {
+            for (int j = 0; j <= 570; j += 30) {
+                spawn("block", i, j);
+            }
+        }
+    }
+
+    private void initGameEntity() {
+//        SpawnData data = new SpawnData(180, 180);
+//        data.put("direction", 0);
+//        data.put("scale", 2);
+//        currentEntity = spawn("triangle", data);
+//        currentComponent = currentEntity.getComponent(TriangleComponent.class);
+//        spawn("blackHole",90,180);
+//        spawn("pipe",180,180);
+    }
+
+    private void initUIView() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("view/GameLayout.fxml"));
@@ -106,7 +245,8 @@ public class MainGame extends GameApplication {
             getGameScene().addUINode(gameUI);
             getGameScene().getUiNodes().get(0).setTranslateX(620);
             getGameScene().getUiNodes().get(0).setTranslateY(20);
-        }catch (Exception e){
+            gameUiController = loader.getController();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -116,81 +256,4 @@ public class MainGame extends GameApplication {
         launch(args);
     }
 
-//    /*
-//    * 文件系统相关 不知道有没有问题
-//    * 文件系统最好放到MainGame类外面去 和model包放在一块
-//    * */
-//    public File getPersonFilePath(){
-//        Preferences prefs = Preferences.userNodeForPackage(MainGame.class);
-//        String filePath = prefs.get("filePath", null);
-//        if (filePath != null) {
-//            return new File(filePath);
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public void setPersonFilePath(File file) {
-//        Preferences prefs = Preferences.userNodeForPackage(MainGame.class);
-//        if (file != null) {
-//            prefs.put("filePath", file.getPath());
-//
-////            // Update the stage title.
-////            primaryStage.setTitle("AddressApp - " + file.getName());
-//        } else {
-//            prefs.remove("filePath");
-//
-////            // Update the stage title.
-////            primaryStage.setTitle("AddressApp");
-//        }
-//    }
-//
-//    public void loadPersonDataFromFile(File file) {
-//        try {
-//            JAXBContext context = JAXBContext
-//                    .newInstance(ChessBoard.class);
-//            Unmarshaller um = context.createUnmarshaller();
-//
-//            // Reading XML from the file and unmarshalling.
-//            ChessBoard wrapper = (ChessBoard) um.unmarshal(file);
-//
-//            chessBoard.clear();
-//            chessBoard.getComponents().addAll(wrapper.getComponents());
-//            chessBoard.setCrossBarLeft(wrapper.getCrossBarLeft());
-//            chessBoard.setCrossBarRight(wrapper.getCrossBarRight());
-//
-//            // Save the file path to the registry.
-//            setPersonFilePath(file);
-//
-//        } catch (Exception e) { // catches ANY exception
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setContentText("Could not load data from file:\n" + file.getPath());
-//            alert.showAndWait();
-//        }
-//    }
-//
-//    public void savePersonDataToFile(File file) {
-//        try {
-//            JAXBContext context = JAXBContext
-//                    .newInstance(ChessBoard.class);
-//            Marshaller m = context.createMarshaller();
-//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-//            // Wrapping our person data.
-////            ChessBoard wrapper = new ChessBoard();
-////            wrapper.setComponents(personData);
-//
-//            // Marshalling and saving XML to the file.
-//            m.marshal(chessBoard, file);
-//
-//            // Save the file path to the registry.
-//            setPersonFilePath(file);
-//        } catch (Exception e) { // catches ANY exception
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setContentText("Could not save data to file:\n" + file.getPath());
-//            alert.showAndWait();
-//        }
-//    }
 }
