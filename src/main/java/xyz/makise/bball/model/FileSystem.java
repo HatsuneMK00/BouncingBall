@@ -4,10 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.scene.control.Alert;
 import xyz.makise.bball.MainGame;
-import xyz.makise.bball.components.CircleComponent;
-import xyz.makise.bball.components.CrossBarComponent;
-import xyz.makise.bball.components.DirectionComponent;
-import xyz.makise.bball.components.EntityPlacer;
+import xyz.makise.bball.components.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -188,7 +185,7 @@ public class FileSystem {
             model = new EntityWrapper(
                     EntityType.CIRCLE,
                     -1,
-                    (int) entity.getTransformComponent().getScaleX(),
+                    (int) entity.getComponent(ScaleComponent.class).getScale(),
                     entity.getTransformComponent().getX(),
                     entity.getTransformComponent().getY()
             );
@@ -197,7 +194,7 @@ public class FileSystem {
             model = new EntityWrapper(
                     EntityType.RECTANGLE,
                     -1,
-                    (int) entity.getTransformComponent().getScaleX(),
+                    (int) entity.getComponent(ScaleComponent.class).getScale(),
                     entity.getTransformComponent().getX(),
                     entity.getTransformComponent().getY()
 
@@ -207,7 +204,7 @@ public class FileSystem {
             model = new EntityWrapper(
                     EntityType.TRIANGLE,
                     entity.getComponent(DirectionComponent.class).getDirection(),
-                    (int) entity.getScaleX(),
+                    (int) entity.getComponent(ScaleComponent.class).getScale(),
                     entity.getX(),
                     entity.getY()
             );
