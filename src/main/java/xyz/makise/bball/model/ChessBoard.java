@@ -1,10 +1,5 @@
 package xyz.makise.bball.model;
 
-import com.almasb.fxgl.core.collection.Array;
-
-import com.almasb.fxgl.entity.Entity;
-import javafx.fxml.FXML;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;

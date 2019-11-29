@@ -98,9 +98,6 @@ public class GameFactory implements EntityFactory {
         ScaleComponent scaleComponent = new ScaleComponent();
         scaleComponent.setScale(scale);
 
-        RectangleComponent rectangleComponent = new RectangleComponent();
-        rectangleComponent.setScale(scale);
-
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.STATIC);
         FixtureDef fd = new FixtureDef();
@@ -115,7 +112,6 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(width, height)))
                 .collidable()
                 .with(physicsComponent)
-                .with(rectangleComponent)
                 .with(scaleComponent)
                 .build();
     }
@@ -248,7 +244,6 @@ public class GameFactory implements EntityFactory {
                 .type(EntityType.PIPE)
                 .from(data)
                 .viewWithBBox("pipe.png")
-                .with(new PipeComponent())
                 .with(physicsComponent)
                 .with(directionComponent)
                 .with(scaleComponent)
@@ -304,7 +299,6 @@ public class GameFactory implements EntityFactory {
                 .from(data)
                 .viewWithBBox("curvedPipe.png")
                 .collidable()
-                .with(new CurvedPipeComponent())
                 .with(directionComponent)
                 .with(scaleComponent)
                 .with(physicsComponent)

@@ -1,17 +1,12 @@
 package xyz.makise.bball.controller;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
-import xyz.makise.bball.MainGame;
 import xyz.makise.bball.model.EntityType;
 import xyz.makise.bball.model.FileSystem;
 
