@@ -2,11 +2,11 @@ package xyz.makise.bball.components;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import xyz.makise.bball.MainGame;
 
 import java.util.HashMap;
 
-import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
-import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class EntityPlacer {
     private HashMap<Integer, Entity> entityMap = new HashMap<>();
@@ -15,13 +15,14 @@ public class EntityPlacer {
     private EntityRotator entityRotator = new EntityRotator();
     private EntityZoomer entityZoomer = new EntityZoomer();
     private static EntityPlacer entityPlacer;
-    private EntityPlacer(){
+
+    private EntityPlacer() {
 
     }
 
     public static EntityPlacer getEntityPlacer() {
-        if(entityPlacer==null)
-            entityPlacer=new EntityPlacer();
+        if (entityPlacer == null)
+            entityPlacer = new EntityPlacer();
         return entityPlacer;
     }
 
@@ -51,7 +52,13 @@ public class EntityPlacer {
                 break;
             }
             case "ball": {
-                entity = spawn("ball", new SpawnData(originX,originY).put("type",0));
+                MainGame game = (MainGame) getApp();
+                if (game.getGameUiController().isGameStarted())
+                    entity = spawn("ball", new SpawnData(originX, originY).put("type", 0));
+                else {
+                    entity = spawn("ball", new SpawnData(originX, originY).put("type", 1));
+
+                }
                 break;
             }
             case "triangle": {
@@ -81,27 +88,27 @@ public class EntityPlacer {
             case "pipe": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("pipe", new SpawnData(x,y).put("scale",1).put("direction",1));
+                entity = spawn("pipe", new SpawnData(x, y).put("scale", 1).put("direction", 1));
                 break;
             }
             case "curved pipe": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("curvedPipe", new SpawnData(x,y).put("scale",1).put("direction",0));
+                entity = spawn("curvedPipe", new SpawnData(x, y).put("scale", 1).put("direction", 0));
                 break;
             }
 //            left cross bar
-            case "L cross bar":{
+            case "L cross bar": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",0));
+                entity = spawn("crossBar", new SpawnData(x, y).put("scale", 1).put("direction", 0).put("type", 0));
                 break;
             }
 //            right cross bar
-            case "R cross bar":{
+            case "R cross bar": {
                 entityCount++;
                 map[(int) (x / 30)][(int) (y / 30)] = entityCount;
-                entity = spawn("crossBar", new SpawnData(x,y).put("scale",1).put("direction",0).put("type",1));
+                entity = spawn("crossBar", new SpawnData(x, y).put("scale", 1).put("direction", 0).put("type", 1));
                 break;
             }
             default: {
@@ -112,19 +119,19 @@ public class EntityPlacer {
         return entity;
     }
 
-    public Entity rotate(Entity entity){
-        return entityRotator.rotate(entity,this);
+    public Entity rotate(Entity entity) {
+        return entityRotator.rotate(entity, this);
     }
 
-    public Entity zoomOut(Entity entity){
-        return entityZoomer.zoomOut(entity,this);
+    public Entity zoomOut(Entity entity) {
+        return entityZoomer.zoomOut(entity, this);
     }
 
-    public Entity zoomIn(Entity entity){
-        return entityZoomer.zoomIn(entity,this);
+    public Entity zoomIn(Entity entity) {
+        return entityZoomer.zoomIn(entity, this);
     }
 
-    public boolean isOutOfBound(double x,double y){
+    public boolean isOutOfBound(double x, double y) {
         return x > getAppWidth() - 250;
     }
 }

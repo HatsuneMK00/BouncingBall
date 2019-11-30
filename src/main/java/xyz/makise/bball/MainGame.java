@@ -23,12 +23,15 @@ import static com.almasb.fxgl.dsl.FXGL.*;
  *
  * */
 public class MainGame extends GameApplication {
-    private Entity ball;
     private Entity currentEntity;
     //    private MyComponent currentComponent;
     private CrossBarComponent leftCrossBar;
     private CrossBarComponent rightCrossBar;
     private GameLayout gameUiController;
+
+    public GameLayout getGameUiController() {
+        return gameUiController;
+    }
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
